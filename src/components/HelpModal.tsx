@@ -1,6 +1,6 @@
 import React from 'react'
-import { POINTS } from '../config/gameConfig'
 import { Modal } from './Modal'
+import { POINTS } from '../config/gameConfig'
 
 interface HelpModalProps {
   isOpen: boolean
@@ -12,98 +12,110 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="max-w-3xl">
       <div className="space-y-6">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-600 dark:from-indigo-400 dark:to-purple-500">
-            How Points Work
+          <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500">
+            Level Up Your Habits
           </h2>
-          <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            Track your habits and earn points to level up
+          <p className="mt-1 text-sm text-gray-400">
+            Complete habits, earn points, unlock characters
           </p>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
-          {/* Base Points */}
-          <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-4 text-white">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-lg font-semibold">Daily Check-in</h3>
-              <span className="text-2xl">✓</span>
+          {/* Daily Points */}
+          <div className="bg-gradient-to-br from-indigo-500/20 to-indigo-600/20 rounded-xl p-4 border border-indigo-500/20">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center">
+                <svg className="w-5 h-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-white">Daily Points</h3>
+                <div className="text-2xl font-bold text-indigo-400">+{POINTS.BASE}</div>
+              </div>
             </div>
-            <p className="text-sm text-blue-100 mb-1">Complete any habit</p>
-            <div className="text-xl font-bold">+{POINTS.BASE} points</div>
+            <p className="text-sm text-gray-400">Complete any habit to earn base points</p>
           </div>
 
           {/* Streak Bonuses */}
-          <div className="bg-gradient-to-br from-orange-500 to-red-600 rounded-lg p-4 text-white">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-lg font-semibold">Streak Rewards</h3>
-              <span className="text-2xl">🔥</span>
+          <div className="bg-gradient-to-br from-orange-500/20 to-red-600/20 rounded-xl p-4 border border-orange-500/20">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center">
+                <span className="text-xl">🔥</span>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-white">Streak Bonuses</h3>
+                <div className="text-2xl font-bold text-orange-400">
+                  Up to +{Math.max(...Object.values(POINTS.STREAK_MILESTONES))}
+                </div>
+              </div>
             </div>
             <div className="space-y-1">
               {Object.entries(POINTS.STREAK_MILESTONES).slice(0, 3).map(([days, points]) => (
                 <div key={days} className="flex justify-between text-sm">
-                  <span>{days} days</span>
-                  <span>+{points} pts</span>
+                  <span className="text-gray-400">{days} days</span>
+                  <span className="text-orange-400">+{points}</span>
                 </div>
               ))}
-              <div className="text-xs text-orange-100 mt-1">...and more for longer streaks!</div>
             </div>
           </div>
-        </div>
 
-        {/* Additional Bonuses */}
-        <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-800/30 rounded-lg p-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Additional Bonuses</h3>
-          
-          <div className="grid gap-4 sm:grid-cols-2">
-            {/* Daily Combo */}
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-white">
-                <span className="text-lg">⚡</span>
-                Daily Combo
+          {/* Combo Bonuses */}
+          <div className="bg-gradient-to-br from-purple-500/20 to-pink-600/20 rounded-xl p-4 border border-purple-500/20">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
+                <span className="text-xl">⚡</span>
               </div>
-              <div className="space-y-1">
-                {Object.entries(POINTS.MULTI_HABIT_COMPLETION).slice(0, 3).map(([count, points]) => (
-                  <div key={count} className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-                    <span>{count} habits</span>
-                    <span>+{points} pts</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Monthly Achievement */}
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-white">
-                <span className="text-lg">🏆</span>
-                Monthly Achievement
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Complete all days in a month:
-                <div className="font-medium text-indigo-600 dark:text-indigo-400 mt-1">
-                  +{POINTS.MONTHLY_COMPLETION} points
+              <div>
+                <h3 className="text-lg font-semibold text-white">Daily Combos</h3>
+                <div className="text-2xl font-bold text-purple-400">
+                  Up to +{Math.max(...Object.values(POINTS.MULTI_HABIT_COMPLETION))}
                 </div>
               </div>
             </div>
+            <div className="space-y-1">
+              {Object.entries(POINTS.MULTI_HABIT_COMPLETION).slice(0, 3).map(([count, points]) => (
+                <div key={count} className="flex justify-between text-sm">
+                  <span className="text-gray-400">{count} habits</span>
+                  <span className="text-purple-400">+{points}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Monthly Achievement */}
+          <div className="bg-gradient-to-br from-green-500/20 to-emerald-600/20 rounded-xl p-4 border border-green-500/20">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+                <span className="text-xl">🏆</span>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-white">Monthly Master</h3>
+                <div className="text-2xl font-bold text-green-400">+{POINTS.MONTHLY_COMPLETION}</div>
+              </div>
+            </div>
+            <p className="text-sm text-gray-400">Complete a habit every day of the month</p>
           </div>
         </div>
 
-        {/* Tips */}
-        <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-lg p-4">
+        {/* Pro Tips */}
+        <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-4 border border-gray-700">
           <div className="flex items-center gap-2 mb-3">
             <span className="text-xl">💡</span>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Pro Tips</h3>
+            <h3 className="text-lg font-semibold text-white">Pro Tips</h3>
           </div>
-          <ul className="grid gap-2 text-sm text-gray-600 dark:text-gray-400">
+          <ul className="grid gap-2 text-sm text-gray-400">
             <li className="flex items-start gap-2">
-              <span className="text-yellow-500">•</span>
+              <span className="text-yellow-500 mt-1">•</span>
               Complete multiple habits daily for combo bonuses
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-yellow-500">•</span>
+              <span className="text-yellow-500 mt-1">•</span>
               Maintain streaks to unlock milestone rewards
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-yellow-500">•</span>
-              Aim for monthly completion for big point boosts
+              <span className="text-yellow-500 mt-1">•</span>
+              Level up to unlock new character variants
             </li>
           </ul>
         </div>

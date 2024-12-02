@@ -19,21 +19,43 @@ const DEFAULT_PROGRESS: UserProgress = {
   level: 1,
   streaks: {},
   lastCompletedDates: {},
-  awardedStreakMilestones: {}
+  awardedStreakMilestones: {},
+  selectedCharacter: {
+    character: 'CuteCat',
+    variant: 'Character01'
+  }
 }
 
-function getItem<T>(key: string, defaultValue: T): T {
-  const item = localStorage.getItem(key)
-  return item ? JSON.parse(item) : defaultValue
+export const getHabits = () => {
+  const stored = localStorage.getItem(STORAGE_KEYS.HABITS)
+  return stored ? JSON.parse(stored) : DEFAULT_HABITS
 }
 
-function setItem<T>(key: string, value: T): void {
-  localStorage.setItem(key, JSON.stringify(value))
+export const saveHabits = (habits: Habit[]) => {
+  localStorage.setItem(STORAGE_KEYS.HABITS, JSON.stringify(habits))
 }
 
-export const getHabits = () => getItem(STORAGE_KEYS.HABITS, DEFAULT_HABITS)
-export const saveHabits = (habits: Habit[]) => setItem(STORAGE_KEYS.HABITS, habits)
-export const getLogs = () => getItem(STORAGE_KEYS.LOGS, [] as HabitLog[])
-export const saveLogs = (logs: HabitLog[]) => setItem(STORAGE_KEYS.LOGS, logs)
-export const getProgress = () => getItem(STORAGE_KEYS.PROGRESS, DEFAULT_PROGRESS)
-export const saveProgress = (progress: UserProgress) => setItem(STORAGE_KEYS.PROGRESS, progress)
+export const getLogs = () => {
+  const stored = localStorage.getItem(STORAGE_KEYS.LOGS)
+  return stored ? JSON.parse(stored) : []
+}
+
+export const saveLogs = (logs: HabitLog[]) => {
+  localStorage.setItem(STORAGE_KEYS.LOGS, JSON.stringify(logs))
+}
+
+export const getProgress = () => {
+  const stored = localStorage.getItem(STORAGE_KEYS.PROGRESS)
+  const progress = stored ? JSON.parse(stored) : DEFAULT_PROGRESS
+  
+  // Ensure default character is set
+  if (!progress.selectedCharacter) {
+    progress.selectedCharacter = DEFAULT_PROGRESS.selectedCharacter
+  }
+  
+  return progress
+}
+
+export const saveProgress = (progress: UserProgress) => {
+  localStorage.setItem(STORAGE_KEYS.PROGRESS, JSON.stringify(progress))
+}

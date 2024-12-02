@@ -1,78 +1,152 @@
 import { useState, useEffect, useRef } from 'react'
-import { useVisibility } from './useVisibility'
-import { ANIMATION_CONFIG, type AnimationType } from '../config/animationConfig'
+import { ANIMATION_CONFIG, generateFramePaths, type AnimationType } from '../config/animationConfig'
+import { validateCharacterSelection } from '../config/characterConfig'
 import type { CharacterSelection } from '../types'
 
-export function useCharacterAnimation(isHit: boolean, selectedCharacter: CharacterSelection) {
-  const [currentAnimation, setCurrentAnimation] = useState<AnimationType>('Idle')
-  const [currentFrame, setCurrentFrame] = useState(0)
-  const frameCountRef = useRef(0)
-  const rafRef = useRef<number>()
-  const lastTimeRef = useRef(0)
-  const isVisible = useVisibility()
+interface AnimationState {
+  currentFrame: number
+  currentAnimation: AnimationType
+}
+
+export function useCharacterAnimation(isHit: boolean, selectedCharacter: CharacterSelection = ANIMATION_CONFIG.defaultCharacter) {
+  const [state, setState] = useState<AnimationState>({
+    currentFrame: 0,
+    currentAnimation: 'Idle'
+  })
+
+  const frameRef = useRef<HTMLImageElement | null>(null)
+  const animationFrameRef = useRef<number>()
+  const lastFrameTimeRef = useRef<number>(0)
+  const hasErrorRef = useRef<boolean>(false)
+
+  // Validate character selection
+  const character = validateCharacterSelection(selectedCharacter.character, selectedCharacter.variant)
+    ? selectedCharacter.character
+    : ANIMATION_CONFIG.defaultCharacter.character
+  const variant = validateCharacterSelection(selectedCharacter.character, selectedCharacter.variant)
+    ? selectedCharacter.variant
+    : ANIMATION_CONFIG.defaultCharacter.variant
 
   const startAnimation = () => {
-    const config = ANIMATION_CONFIG[selectedCharacter.character][selectedCharacter.variant][currentAnimation]
-    const frameDuration = 1000 / config.fps
-
-    const animate = (timestamp: number) => {
-      if (!lastTimeRef.current) lastTimeRef.current = timestamp
-      const elapsed = timestamp - lastTimeRef.current
-
-      if (elapsed >= frameDuration) {
-        frameCountRef.current = (frameCountRef.current + 1) % config.frameCount
-        lastTimeRef.current = timestamp
-
-        if (currentAnimation === 'Hit' && frameCountRef.current === config.frameCount - 1) {
-          setCurrentAnimation('Idle')
-          frameCountRef.current = 0
-          lastTimeRef.current = 0
-        }
-
-        setCurrentFrame(frameCountRef.current)
-      }
-
-      rafRef.current = requestAnimationFrame(animate)
+    setState({
+      currentFrame: 0,
+      currentAnimation: 'Idle'
+    })
+    lastFrameTimeRef.current = 0
+    hasErrorRef.current = false
+    
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current)
     }
-
-    if (rafRef.current) {
-      cancelAnimationFrame(rafRef.current)
-    }
-
-    rafRef.current = requestAnimationFrame(animate)
+    
+    animationFrameRef.current = requestAnimationFrame(animate)
   }
 
+  const animate = (timestamp: number) => {
+    if (hasErrorRef.current || document.hidden) return
+
+    if (!lastFrameTimeRef.current) {
+      lastFrameTimeRef.current = timestamp
+    }
+
+    const elapsed = timestamp - lastFrameTimeRef.current
+    
+    if (elapsed >= ANIMATION_CONFIG.frameDuration) {
+      setState(prev => {
+        let nextFrame = prev.currentFrame + 1
+        let nextAnimation = prev.currentAnimation
+
+        if (nextFrame >= ANIMATION_CONFIG.frameCount[prev.currentAnimation]) {
+          if (prev.currentAnimation === 'Idle') {
+            nextFrame = 0
+          } else {
+            nextFrame = 0
+            nextAnimation = 'Idle'
+          }
+        }
+
+        return { currentFrame: nextFrame, currentAnimation: nextAnimation }
+      })
+
+      lastFrameTimeRef.current = timestamp
+    }
+
+    if (!document.hidden) {
+      animationFrameRef.current = requestAnimationFrame(animate)
+    }
+  }
+
+  // Handle visibility changes
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (animationFrameRef.current) {
+          cancelAnimationFrame(animationFrameRef.current)
+        }
+      } else {
+        startAnimation()
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    window.addEventListener('focus', startAnimation)
+    window.addEventListener('blur', () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
+    })
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      window.removeEventListener('focus', startAnimation)
+      window.removeEventListener('blur', startAnimation)
+    }
+  }, [])
+
+  // Handle character/variant changes
+  useEffect(() => {
+    startAnimation()
+  }, [character, variant])
+
+  // Handle hit animation
   useEffect(() => {
     if (isHit) {
-      setCurrentAnimation('Hit')
-      frameCountRef.current = 0
-      lastTimeRef.current = 0
-      
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current)
-        rafRef.current = undefined
-      }
+      setState({
+        currentFrame: 0,
+        currentAnimation: 'Hit'
+      })
+      lastFrameTimeRef.current = 0
+      hasErrorRef.current = false
     }
   }, [isHit])
 
+  // Main animation loop
   useEffect(() => {
-    if (isVisible) {
-      startAnimation()
-    } else {
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current)
-      }
+    if (!document.hidden && !hasErrorRef.current) {
+      animationFrameRef.current = requestAnimationFrame(animate)
     }
 
     return () => {
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current)
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
       }
     }
-  }, [currentAnimation, isVisible, selectedCharacter])
+  }, [state.currentAnimation, state.currentFrame])
+
+  const frames = generateFramePaths(character, variant, state.currentAnimation)
+  const currentFrameData = frames[state.currentFrame]
 
   return {
-    currentFrame,
-    currentAnimation
+    frameRef,
+    currentFrame: state.currentFrame,
+    currentAnimation: state.currentAnimation,
+    frameSrc: currentFrameData?.src,
+    hasError: hasErrorRef.current,
+    setHasError: (error: boolean) => {
+      hasErrorRef.current = error
+      if (!error) {
+        startAnimation()
+      }
+    }
   }
 }

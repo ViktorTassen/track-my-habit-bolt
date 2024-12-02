@@ -1,59 +1,16 @@
 export const ANIMATION_CONFIG = {
-  CuteCat: {
-    Character01: {
-      Idle: {
-        frameCount: 20,
-        fps: 30,
-        loop: true,
-      },
-      Hit: {
-        frameCount: 50,
-        fps: 30,
-        loop: false,
-      }
-    },
-    Character02: {
-      Idle: {
-        frameCount: 20,
-        fps: 30,
-        loop: true,
-      },
-      Hit: {
-        frameCount: 50,
-        fps: 30,
-        loop: false,
-      }
-    },
-    Character03: {
-      Idle: {
-        frameCount: 20,
-        fps: 30,
-        loop: true,
-      },
-      Hit: {
-        frameCount: 50,
-        fps: 30,
-        loop: false,
-      }
-    }
+  frameCount: {
+    Idle: 20,
+    Hit: 50
   },
-  CartoonPenguin: {
-    Character01: {
-      Idle: {
-        frameCount: 20,
-        fps: 30,
-        loop: true,
-      },
-      Hit: {
-        frameCount: 35,
-        fps: 30,
-        loop: false,
-      }
-    }
+  frameDuration: 30, // milliseconds per frame
+  defaultCharacter: {
+    character: 'CuteCat',
+    variant: 'Character01'
   }
 } as const
 
-export type AnimationType = 'Idle' | 'Hit'
+export type AnimationType = keyof typeof ANIMATION_CONFIG.frameCount
 
 export const BONUS_ICONS = {
   streak: '🔥',
@@ -63,3 +20,19 @@ export const BONUS_ICONS = {
 } as const
 
 export type BonusType = keyof typeof BONUS_ICONS
+
+export const generateFramePaths = (character: string, variant: string, animation: AnimationType) => {
+  const frames = [];
+
+  for (let i = 0; i < ANIMATION_CONFIG.frameCount[animation]; i++) {
+    frames.push({
+      src: `/assets/characters/${character}/${variant}/${animation}/${String(i).padStart(2, '0')}.png`,
+      duration: ANIMATION_CONFIG.frameDuration
+    })
+  }
+  return frames
+}
+
+export const getCharacterPreviewPath = (character: string, variant: string): string => {
+  return `/assets/characters/${character}/${variant}/Idle/00.png`
+}

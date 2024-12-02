@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useCharacterAnimation } from '../hooks/useCharacterAnimation'
 import type { CharacterSelection } from '../types'
 
@@ -13,20 +13,54 @@ export const CharacterAnimation: React.FC<CharacterAnimationProps> = ({
   className = '',
   selectedCharacter
 }) => {
-  const { currentFrame, currentAnimation } = useCharacterAnimation(isHit, selectedCharacter)
+  const [imageError, setImageError] = useState(false)
+  const { frameRef, frameSrc, hasError, setHasError } = useCharacterAnimation(isHit, selectedCharacter)
   
-  const frameNumber = currentFrame.toString().padStart(2, '0')
-  const framePath = `/assets/characters/${selectedCharacter.character}/${selectedCharacter.variant}/${currentAnimation}/${frameNumber}.png`
+  useEffect(() => {
+    setImageError(false)
+  }, [frameSrc])
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden && (imageError || hasError)) {
+        setImageError(false)
+        setHasError(false)
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
+  }, [imageError, hasError, setHasError])
+
+  if (!frameSrc || imageError || hasError) {
+    return (
+      <div className={`flex items-center justify-center ${className}`}>
+        <button 
+          onClick={() => {
+            setImageError(false)
+            setHasError(false)
+          }}
+          className="text-4xl hover:scale-110 transition-transform"
+          aria-label="Retry loading character"
+        >
+          😺
+        </button>
+      </div>
+    )
+  }
 
   return (
     <img
-      src={framePath}
+      ref={frameRef}
+      src={frameSrc}
       alt="Character"
       className={`w-full h-full object-contain select-none ${className}`}
       draggable="false"
       style={{ imageRendering: 'pixelated' }}
-      onError={(e) => {
-        console.error('Failed to load character frame:', e.currentTarget.src)
+      onError={() => {
+        console.error('Failed to load character frame:', frameSrc)
+        setImageError(true)
+        setHasError(true)
       }}
     />
   )

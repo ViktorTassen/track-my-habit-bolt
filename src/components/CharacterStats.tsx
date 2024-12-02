@@ -14,6 +14,7 @@ interface CharacterStatsProps {
   bestStreak: number
   scoreEvents?: ScoreEvent[]
   selectedCharacter: CharacterSelection
+  onCharacterClick?: () => void
 }
 
 export const CharacterStats: React.FC<CharacterStatsProps> = ({
@@ -23,7 +24,8 @@ export const CharacterStats: React.FC<CharacterStatsProps> = ({
   totalCompleted,
   bestStreak,
   scoreEvents = [],
-  selectedCharacter
+  selectedCharacter,
+  onCharacterClick
 }) => {
   const [showContent, setShowContent] = useState(false)
   const [animationKey, setAnimationKey] = useState(0)
@@ -56,7 +58,7 @@ export const CharacterStats: React.FC<CharacterStatsProps> = ({
   }, [scoreEvents])
 
   return (
-    <div className="relative bg-gradient-to-br from-indigo-500 to-purple-600 dark:from-indigo-600 dark:to-purple-800 rounded-xl p-3 select-none min-h-[140px] overflow-visible">
+    <div className="relative bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl p-3 select-none min-h-[140px] overflow-visible">
       <div className="absolute inset-0 overflow-hidden rounded-xl">
         <div className="absolute inset-0 bg-black/10" />
         <div className="absolute top-0 left-0 w-full h-16 bg-white/5 transform -skew-y-6" />
@@ -67,14 +69,17 @@ export const CharacterStats: React.FC<CharacterStatsProps> = ({
         <div className="flex items-center gap-3">
           <div className="relative w-44 h-40 flex-shrink-0">
             <div className="absolute inset-0 bg-white/5 rounded-full" />
-            <div className="absolute inset-0 scale-[2.2] translate-y-16 -translate-x-2 origin-bottom overflow-visible">
+            <button
+              onClick={onCharacterClick}
+              className="absolute inset-0 scale-[2.2] translate-y-16 -translate-x-2 origin-bottom overflow-visible hover:scale-[2.3] transition-transform duration-200"
+            >
               <CharacterAnimation
                 key={animationKey}
                 isHit={scoreEvents.length > 0}
                 className="w-full h-full object-contain"
                 selectedCharacter={selectedCharacter}
               />
-            </div>
+            </button>
           </div>
 
           <div className="flex-1 min-w-0">
@@ -115,9 +120,9 @@ export const CharacterStats: React.FC<CharacterStatsProps> = ({
                 <ScoreEventsList events={scoreEvents} />
               ) : (
                 <div className="flex gap-2">
-                  <StatsCard label="Active Habits" value={activeHabits} />
-                  <StatsCard label="Total Completed" value={totalCompleted} />
-                  <StatsCard label="Best Streak" value={`${bestStreak} days`} />
+                  <StatsCard label="Active Habits" value={activeHabits} icon="habits" />
+                  <StatsCard label="Total Completed" value={totalCompleted} icon="completed" />
+                  <StatsCard label="Best Streak" value={`${bestStreak} days`} icon="streak" />
                 </div>
               )}
             </div>
