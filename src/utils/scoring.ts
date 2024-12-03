@@ -69,13 +69,13 @@ const isMonthCompleted = (habitId: string, date: string, logs: HabitLog[]): bool
 export const calculatePointsForHabit = (
   habit: Habit,
   date: string,
-  habits: Habit[],
+  _habits: Habit[],
   logs: HabitLog[],
   currentProgress: UserProgress
 ): { points: number; events: ScoreEvent[]; updatedProgress: UserProgress } => {
   const events: ScoreEvent[] = []
   let totalPoints = POINTS.BASE
-  const updatedProgress = {
+  const updatedProgress: UserProgress = {
     ...currentProgress,
     awardedStreakMilestones: { 
       ...currentProgress.awardedStreakMilestones,
@@ -106,7 +106,8 @@ export const calculatePointsForHabit = (
   const streak = calculateStreak(habit.id, logs, date)
   Object.entries(POINTS.STREAK_MILESTONES).forEach(([days, points]) => {
     const milestone = parseInt(days)
-    if (streak === milestone && !updatedProgress.awardedStreakMilestones[habit.id].includes(milestone)) {
+    const milestones = updatedProgress.awardedStreakMilestones[habit.id] || []
+    if (streak === milestone && !milestones.includes(milestone)) {
       totalPoints += points
       events.push({
         type: 'streak',
@@ -114,7 +115,7 @@ export const calculatePointsForHabit = (
         details: `${days}-day streak on ${habit.name}!`,
         timestamp: new Date(date).getTime()
       })
-      updatedProgress.awardedStreakMilestones[habit.id].push(milestone)
+      milestones.push(milestone)
     }
   })
 
@@ -147,7 +148,7 @@ export const recalculateAllPoints = (
   currentProgress: UserProgress
 ): { totalPoints: number; updatedProgress: UserProgress } => {
   let totalPoints = 0
-  const updatedProgress = {
+  const updatedProgress: UserProgress = {
     ...currentProgress,
     awardedStreakMilestones: {}
   }

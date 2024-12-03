@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect, useMemo } from 'react'
 import { addDays, subDays, startOfDay, isToday } from 'date-fns'
 import type { Habit, HabitLog } from '../types'
 import { useCalendarPosition } from '../hooks/useCalendarPosition'
-import { memoizedCalculateStreak } from '../utils/memoization'
 import { CalendarHeader } from './calendar/CalendarHeader'
 import { HabitList } from './calendar/HabitList'
 import { DayColumn } from './calendar/DayColumn'
@@ -41,38 +40,6 @@ export const MonthView: React.FC<MonthViewProps> = ({
       return acc
     }, { activeHabits: [] as Habit[], archivedHabits: [] as Habit[] })
   }, [habits])
-
-  // Calculate streak info for all habits at once
-  const streakInfo = useMemo(() => {
-    return habits.reduce((acc, habit) => {
-      const habitLogs = logs.filter(log => log.habitId === habit.id && log.completed)
-      const sortedLogs = habitLogs.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-      const currentStreak = memoizedCalculateStreak(habit.id, logs, sortedLogs[0]?.date)
-      
-      let maxStreak = 0
-      let currentCount = 0
-      let prevDate: Date | null = null
-      
-      sortedLogs.forEach(log => {
-        const logDate = new Date(log.date)
-        if (!prevDate) {
-          currentCount = 1
-        } else {
-          const diffDays = Math.floor((prevDate.getTime() - logDate.getTime()) / (1000 * 60 * 60 * 24))
-          if (diffDays === 1) {
-            currentCount++
-          } else {
-            currentCount = 1
-          }
-        }
-        maxStreak = Math.max(maxStreak, currentCount)
-        prevDate = logDate
-      })
-
-      acc[habit.id] = { currentStreak, maxStreak }
-      return acc
-    }, {} as Record<string, { currentStreak: number; maxStreak: number }>)
-  }, [habits, logs])
 
   useEffect(() => {
     const calculateDaysToShow = () => {
@@ -140,7 +107,7 @@ export const MonthView: React.FC<MonthViewProps> = ({
             <HabitList
               activeHabits={activeHabits}
               archivedHabits={archivedHabits}
-              streakInfo={streakInfo}
+              logs={logs}
               onHabitClick={onHabitClick}
               onReorderHabits={onReorderHabits}
               onShowArchivedChange={setShowArchived}

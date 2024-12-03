@@ -1,13 +1,13 @@
 import React from 'react'
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import type { Habit } from '../../types'
+import type { Habit, HabitLog } from '../../types'
 import { HabitRow } from './HabitRow'
 
 interface HabitListProps {
   activeHabits: Habit[]
   archivedHabits: Habit[]
-  streakInfo: Record<string, { currentStreak: number; maxStreak: number }>
+  logs: HabitLog[]
   onHabitClick: (habit: Habit) => void
   onReorderHabits: (habitIds: string[]) => void
   onShowArchivedChange: (show: boolean) => void
@@ -16,7 +16,7 @@ interface HabitListProps {
 export const HabitList: React.FC<HabitListProps> = ({
   activeHabits,
   archivedHabits,
-  streakInfo,
+  logs,
   onHabitClick,
   onReorderHabits,
   onShowArchivedChange
@@ -65,7 +65,7 @@ export const HabitList: React.FC<HabitListProps> = ({
             <HabitRow
               key={habit.id}
               habit={habit}
-              streakInfo={streakInfo[habit.id]}
+              logs={logs}
               onHabitClick={onHabitClick}
               sortable={true}
             />
@@ -79,7 +79,7 @@ export const HabitList: React.FC<HabitListProps> = ({
             <HabitRow
               key={habit.id}
               habit={habit}
-              streakInfo={streakInfo[habit.id]}
+              logs={logs}
               onHabitClick={onHabitClick}
               sortable={false}
             />

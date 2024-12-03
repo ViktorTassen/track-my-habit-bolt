@@ -154,7 +154,7 @@ export function useHabitData() {
 
     const isCompleting = !existingLog || !existingLog.completed
     if (isCompleting) {
-      const { points, events, updatedProgress } = calculatePointsForHabit(
+      const { events, updatedProgress } = calculatePointsForHabit(
         habit,
         date,
         habits,
@@ -173,10 +173,6 @@ export function useHabitData() {
       await saveProgress(newProgress)
       setProgress(newProgress)
       setScoreEvents(events)
-
-      // setTimeout(() => {
-      //   setScoreEvents([])
-      // }, 3000)
     } else {
       const { totalPoints, updatedProgress } = recalculateAllPoints(habits, updatedLogs, progress)
       const level = calculateLevel(totalPoints)

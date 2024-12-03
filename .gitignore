@@ -6,3 +6,5 @@ node_modules/
 
 assets/characters/*
 !assets/characters/CuteCat/Character01/
+
+dist/
