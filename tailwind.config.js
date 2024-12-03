@@ -7,9 +7,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        jua: ["Jua", "sans-serif"],
-        bubblegum: ["Bubblegum Sans", "serif"],
-        berkshire: ["Berkshire Swash", "serif"],
+        quicksand: ["Quicksand", "sans-serif"],
       },
       keyframes: {
         'slide-up': {

@@ -27,7 +27,7 @@ export const CharacterSelectionModal: React.FC<CharacterSelectionModalProps> = (
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="max-w-4xl">
       <div className="space-y-4 select-none">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500">
+          <h2 className="font-quicksand text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500">
              Choose your companion
           </h2>
           {pointsToNextUnlock && (

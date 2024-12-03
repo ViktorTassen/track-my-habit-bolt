@@ -10,7 +10,7 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   return (
     <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-      <h1 className=" text-2xl font-bold text-white order-1">
+    <h1 className="text-3xl font-bold text-blue-100 font-quicksand order-1">
         Track My Habit
       </h1>
       

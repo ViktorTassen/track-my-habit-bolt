@@ -24,7 +24,7 @@ export const MotivationCard: React.FC = () => {
 
   <div className="relative p-6 flex flex-col h-full">
     <div className="flex items-center justify-between mb-1">
-      <h2 className="text-lg font-bold text-white">My motivation</h2>
+      <h2 className="font-quicksand text-lg font-bold text-white">My motivation</h2>
       <button
         onClick={() => setIsEditing(true)}
         className="text-indigo-200 hover:text-white transition-colors"

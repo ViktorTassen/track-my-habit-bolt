@@ -112,13 +112,13 @@ export const CharacterStats: React.FC<CharacterStatsProps> = ({
             <div className="flex items-center justify-between mb-2">
               <div className="flex flex-col gap-1">
                 <div className="flex items-baseline gap-2">
-                  <h2 className="text-lg font-bold text-white">Level {level}</h2>
+                  <h2 className="font-quicksand text-lg font-bold text-white">Level {level}</h2>
                   <div className="flex items-baseline gap-1">
-                    <span className="text-sm font-medium text-indigo-200">
+                    <span className="font-quicksand text-sm font-medium text-indigo-200">
                       {points.toLocaleString()} pts
                     </span>
                     {totalNewPoints > 0 && (
-                      <span className="text-sm font-bold text-yellow-300 animate-bounce">
+                      <span className="font-quicksand text-sm font-bold text-yellow-300 animate-bounce">
                         +{totalNewPoints}
                       </span>
                     )}
@@ -136,7 +136,6 @@ export const CharacterStats: React.FC<CharacterStatsProps> = ({
                 />
               </div>
               <div className="flex justify-end text-[10px] text-indigo-200/90 mt-0.5">
-                {/* <span>{Math.round(progress)}% to next level</span> */}
                 <span>{nextThreshold.toLocaleString()}</span>
               </div>
             </div>
