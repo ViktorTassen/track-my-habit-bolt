@@ -56,7 +56,6 @@ export const CharacterAnimation: React.FC<CharacterAnimationProps> = ({
       alt="Character"
       className={`w-full h-full object-contain select-none ${className}`}
       draggable="false"
-      style={{ imageRendering: 'pixelated' }}
       onError={() => {
         console.error('Failed to load character frame:', frameSrc)
         setImageError(true)

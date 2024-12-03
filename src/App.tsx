@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from "react"
+import { useState, useEffect } from "react"
 import { Header } from "./components/Header"
 import { HabitForm } from "./components/HabitForm"
 import { MonthView } from "./components/MonthView"
@@ -7,8 +7,6 @@ import { StatsSection } from "./components/StatsSection"
 import { HelpModal } from "./components/HelpModal"
 import { CharacterSelectionModal } from "./components/CharacterSelectionModal"
 import { ClearDataSection } from "./components/ClearDataSection"
-import { LoadingSpinner } from "./components/shared/LoadingSpinner"
-import { ErrorBoundary } from "./components/shared/ErrorBoundary"
 import { useHabitData } from "./hooks/useHabitData"
 import type { Habit, CharacterSelection } from "./types"
 
@@ -29,7 +27,6 @@ function App() {
     handleClearAll,
     handleReorderHabits,
     setProgress,
-    isLoading
   } = useHabitData()
 
   const [showForm, setShowForm] = useState(false)
@@ -57,28 +54,22 @@ function App() {
     setShowCharacterSelect(false)
   }
 
-  if (isLoading) {
-    return <LoadingSpinner />
-  }
-
   return (
     <div className="min-h-screen bg-gray-900 p-4 sm:p-8">
       <div className="max-w-6xl mx-auto">
-        <ErrorBoundary>
           <Header
             onOpenCharacterSelect={() => setShowCharacterSelect(true)}
             onOpenHelp={() => setShowHelp(true)}
           />
 
           <div className="space-y-6">
-            <Suspense fallback={<LoadingSpinner />}>
               <StatsSection
                 habits={habits}
                 logs={logs}
                 points={progress.points}
                 level={progress.level}
                 scoreEvents={scoreEvents}
-                selectedCharacter={progress.selectedCharacter}
+                selectedCharacter={progress.selectedCharacter ?? { character: 'CuteCat', variant: 'Character01' }}
                 onCharacterClick={() => setShowCharacterSelect(true)}
               />
 
@@ -150,9 +141,7 @@ function App() {
                   />
                 </div>
               )}
-            </Suspense>
           </div>
-        </ErrorBoundary>
       </div>
     </div>
   )

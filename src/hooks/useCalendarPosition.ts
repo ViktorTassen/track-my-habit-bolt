@@ -24,7 +24,6 @@ export function useCalendarPosition() {
   }, [startDate])
 
   const setDateWithinBounds = (newDate: Date) => {
-    const today = startOfDay(new Date())
     if (differenceInDays(maxEndDate, newDate) < 0) {
       setStartDate(addDays(maxEndDate, -31))
     } else {

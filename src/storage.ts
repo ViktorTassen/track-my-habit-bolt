@@ -7,14 +7,24 @@ const STORAGE_KEYS = {
   PROGRESS: 'user-progress'
 } as const
 
-const DEFAULT_HABITS: Habit[] = [{
-  id: "default-1",
-  name: "Daily Exercise",
-  color: "#4F46E5",
-  createdAt: new Date().toISOString(),
-  frequency: "daily",
-  order: 0
-}]
+const DEFAULT_HABITS: Habit[] = [
+  {
+    id: "default-1",
+    name: "Daily Exercise",
+    color: "#4F46E5",
+    createdAt: new Date().toISOString(),
+    frequency: "daily",
+    order: 0
+  },
+  {
+    id: "default-2",
+    name: "8h sleep",
+    color: "#059669",
+    createdAt: new Date().toISOString(),
+    frequency: "daily",
+    order: 2
+  }
+]
 
 const DEFAULT_PROGRESS: UserProgress = {
   points: 0,
@@ -22,7 +32,10 @@ const DEFAULT_PROGRESS: UserProgress = {
   streaks: {},
   lastCompletedDates: {},
   awardedStreakMilestones: {},
-  selectedCharacter: ANIMATION_CONFIG.defaultCharacter,
+  selectedCharacter: ANIMATION_CONFIG?.defaultCharacter || {
+    character: 'CuteCat',
+    variant: 'Character01'
+  },
   habitOrder: []
 }
 
@@ -47,12 +60,12 @@ export const saveLogs = (logs: HabitLog[]): void => {
 export const getProgress = (): UserProgress => {
   const stored = localStorage.getItem(STORAGE_KEYS.PROGRESS)
   const progress = stored ? JSON.parse(stored) : DEFAULT_PROGRESS
-  
+
   // Ensure default character is set
   if (!progress.selectedCharacter) {
     progress.selectedCharacter = DEFAULT_PROGRESS.selectedCharacter
   }
-  
+
   return progress
 }
 

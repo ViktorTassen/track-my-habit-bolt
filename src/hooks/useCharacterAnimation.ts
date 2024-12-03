@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { ANIMATION_CONFIG, generateFramePaths, type AnimationType } from '../config/animationConfig'
+import { ANIMATION_CONFIG, CHARACTER_FRAME_CONFIG, generateFramePaths, type AnimationType } from '../config/animationConfig'
 import { validateCharacterSelection } from '../config/characterConfig'
 import type { CharacterSelection } from '../types'
 
@@ -19,7 +19,7 @@ export function useCharacterAnimation(isHit: boolean, selectedCharacter: Charact
   const lastFrameTimeRef = useRef<number>(0)
   const hasErrorRef = useRef<boolean>(false)
 
-  // Validate character selection
+  // Validate character selection and ensure it's a valid character type
   const character = validateCharacterSelection(selectedCharacter.character, selectedCharacter.variant)
     ? selectedCharacter.character
     : ANIMATION_CONFIG.defaultCharacter.character
@@ -56,7 +56,8 @@ export function useCharacterAnimation(isHit: boolean, selectedCharacter: Charact
         let nextFrame = prev.currentFrame + 1
         let nextAnimation = prev.currentAnimation
 
-        if (nextFrame >= ANIMATION_CONFIG.frameCount[prev.currentAnimation]) {
+        const maxFrames = CHARACTER_FRAME_CONFIG[character][prev.currentAnimation]
+        if (nextFrame >= maxFrames) {
           if (prev.currentAnimation === 'Idle') {
             nextFrame = 0
           } else {
@@ -100,6 +101,9 @@ export function useCharacterAnimation(isHit: boolean, selectedCharacter: Charact
       document.removeEventListener('visibilitychange', handleVisibilityChange)
       window.removeEventListener('focus', startAnimation)
       window.removeEventListener('blur', startAnimation)
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
     }
   }, [])
 

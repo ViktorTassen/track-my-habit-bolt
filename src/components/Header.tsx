@@ -6,13 +6,12 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({
-  onOpenCharacterSelect,
   onOpenHelp
 }) => {
   return (
     <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-      <h1 className="text-2xl sm:text-3xl font-bold text-white order-1">
-        Track My Habits
+      <h1 className=" text-2xl font-bold text-white order-1">
+        Track My Habit
       </h1>
       
       <div className="flex items-center gap-2 sm:gap-4 order-2 sm:order-3 ml-auto">

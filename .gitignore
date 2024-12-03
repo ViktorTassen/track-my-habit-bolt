@@ -3,3 +3,6 @@ node_modules/
 
 # Ignore macOS system files
 .DS_Store
+
+assets/characters/*
+!assets/characters/CuteCat/Character01/

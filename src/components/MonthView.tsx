@@ -103,11 +103,11 @@ export const MonthView: React.FC<MonthViewProps> = ({
   }
 
   const handleScrollLeft = () => {
-    setStartDate(date => subDays(date, 7))
+    setStartDate(subDays(startDate, 7))
   }
 
   const handleScrollRight = () => {
-    setStartDate(date => addDays(date, 7))
+    setStartDate(addDays(startDate, 7))
   }
 
   const handleScrollToToday = () => {

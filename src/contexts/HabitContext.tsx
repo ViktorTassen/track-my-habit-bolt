@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import type { Habit, HabitLog, UserProgress } from '../types'
-import { getHabits, saveHabits, getLogs, saveLogs, getProgress, saveProgress } from '../utils/storage'
+import { getHabits, saveHabits, getLogs, saveLogs, getProgress, saveProgress } from '../storage'
 
 interface HabitContextType {
   habits: Habit[]

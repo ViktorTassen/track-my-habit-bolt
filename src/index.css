@@ -17,3 +17,22 @@
     transform: translateY(0);
   }
 }
+
+
+.jua-regular {
+  font-family: "Jua", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+.bubblegum-sans-regular {
+  font-family: "Bubblegum Sans", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.berkshire-swash-regular {
+  font-family: "Berkshire Swash", serif;
+  font-weight: 400;
+  font-style: normal;
+}

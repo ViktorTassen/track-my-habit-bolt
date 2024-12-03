@@ -55,11 +55,11 @@ export const StatsCard: React.FC<StatsCardProps> = ({
 
   return (
     <div className={`
-      flex-1 rounded-lg px-2 py-1.5
-      border border-white/10 
+      flex-2 rounded-lg px-2 py-1.5
+      border border-white/20 
       backdrop-blur-sm
       transition-all duration-200
-      hover:bg-white/20
+      hover:bg-white/10
       ${className}
     `}>
       <div className="flex items-center gap-1.5">

@@ -6,6 +6,11 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        jua: ["Jua", "sans-serif"],
+        bubblegum: ["Bubblegum Sans", "serif"],
+        berkshire: ["Berkshire Swash", "serif"],
+      },
       keyframes: {
         'slide-up': {
           '0%': { transform: 'translateY(20px)', opacity: 0 },

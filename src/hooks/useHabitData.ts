@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { getHabits, saveHabits, getLogs, saveLogs, getProgress, saveProgress } from '../utils/storage'
+import { getHabits, saveHabits, getLogs, saveLogs, getProgress, saveProgress } from '../storage'
 import { recalculateAllPoints, calculatePointsForHabit, calculateLevel } from '../utils/scoring'
 import { ANIMATION_CONFIG } from '../config/animationConfig'
 import { isVariantUnlocked } from '../config/unlockConfig'
@@ -174,9 +174,9 @@ export function useHabitData() {
       setProgress(newProgress)
       setScoreEvents(events)
 
-      setTimeout(() => {
-        setScoreEvents([])
-      }, 3000)
+      // setTimeout(() => {
+      //   setScoreEvents([])
+      // }, 3000)
     } else {
       const { totalPoints, updatedProgress } = recalculateAllPoints(habits, updatedLogs, progress)
       const level = calculateLevel(totalPoints)

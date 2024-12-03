@@ -22,7 +22,7 @@ export interface UserProgress {
   level: number
   streaks: Record<string, number>
   lastCompletedDates: Record<string, string>
-  awardedStreakMilestones: Record<string, number[]>
+  awardedStreakMilestones: { [key: string]: number[] }
   selectedCharacter?: CharacterSelection
   habitOrder?: string[]
 }

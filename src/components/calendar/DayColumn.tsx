@@ -74,7 +74,7 @@ export const DayColumn: React.FC<DayColumnProps> = ({
       ))}
 
       {showArchived && archivedHabits.map((habit) => {
-        const isDisabled = habit.archivedAt && new Date(day) > new Date(habit.archivedAt)
+        const isDisabled = !!habit.archivedAt && new Date(day) > new Date(habit.archivedAt)
 
         return (
           <div
