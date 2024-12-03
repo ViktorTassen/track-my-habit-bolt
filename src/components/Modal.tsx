@@ -42,7 +42,7 @@ export const Modal: React.FC<ModalProps> = ({
         />
         
         <div className={`relative bg-white dark:bg-gray-800 rounded-lg ${maxWidth} w-full max-h-[90vh] overflow-y-auto shadow-xl transform transition-all`}>
-          <div className="p-6">
+          <div className="p-3">
             {children}
           </div>
           <button

@@ -8,21 +8,21 @@ export const MotivationCard: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false)
 
   const handlePromiseChange = (newPromise: string) => {
-    const trimmedPromise = newPromise.slice(0, 300)
+    const trimmedPromise = newPromise.slice(0, 360)
     setPromise(trimmedPromise)
     localStorage.setItem('user-promise', trimmedPromise)
     setIsEditing(false)
   }
 
   return (
-    <div className="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl relative overflow-hidden flex flex-col min-h-[140px]">
+    <div className="bg-gradient-to-br from-purple-500 rounded-xl relative overflow-hidden flex flex-col min-h-[140px]">
   <div className="absolute inset-0">
     <div className="absolute inset-0 bg-black/10" />
     <div className="absolute top-0 left-0 w-full h-8 bg-white/5 transform -skew-y-6" />
     <div className="absolute bottom-0 right-0 w-full h-8 bg-black/5 transform skew-y-6" />
   </div>
 
-  <div className="relative p-6 flex flex-col h-full">
+  <div className="relative px-6 py-3 flex flex-col h-full">
     <div className="flex items-center justify-between mb-1">
       <h2 className="font-quicksand text-lg font-bold text-white">My motivation</h2>
       <button
@@ -45,13 +45,13 @@ export const MotivationCard: React.FC = () => {
         <textarea
           value={promise}
           onChange={(e) => setPromise(e.target.value)}
-          maxLength={180}
+          maxLength={360}
           className="flex-1 p-2 text-sm bg-white/10 border border-white/20 rounded-lg text-white placeholder-indigo-200/70 focus:ring-2 focus:ring-white/20 focus:border-transparent resize-none"
           placeholder="Write your motivation here..."
         />
         <div className="flex justify-between items-center mt-1">
           <span className="text-xs text-indigo-200/70">
-            {promise.length}/180
+            {promise.length}/360
           </span>
           <div className="flex gap-2">
             <button

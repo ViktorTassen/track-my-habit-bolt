@@ -40,7 +40,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
               d="M12 4v16m8-8H4" 
             />
           </svg>
-          <span className="text-sm font-medium">Add habit</span>
+          <span className="hidden sm:inline text-sm font-medium">Add habit</span>
         </button>
       </div>
 

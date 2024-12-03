@@ -53,20 +53,20 @@ export const StatsSection: React.FC<StatsSectionProps> = ({
   }, 0)
 
   return (
-    <div className="grid gap-3 md:grid-cols-[2fr,1fr]">
-      <CharacterStats
-        level={level}
-        points={points}
-        activeHabits={activeHabits}
-        totalCompleted={totalCompleted}
-        bestStreak={bestStreak}
-        scoreEvents={scoreEvents}
-        selectedCharacter={selectedCharacter}
-        onCharacterClick={onCharacterClick}
-      />
-      <div className="hidden md:block">
-        <MotivationCard />
-      </div>
-    </div>
+    <div className="grid gap-3 lg:grid-cols-[2fr,1fr]">
+  <CharacterStats
+    level={level}
+    points={points}
+    activeHabits={activeHabits}
+    totalCompleted={totalCompleted}
+    bestStreak={bestStreak}
+    scoreEvents={scoreEvents}
+    selectedCharacter={selectedCharacter}
+    onCharacterClick={onCharacterClick}
+  />
+  <div className="hidden lg:block">
+    <MotivationCard />
+  </div>
+</div>
   )
 }

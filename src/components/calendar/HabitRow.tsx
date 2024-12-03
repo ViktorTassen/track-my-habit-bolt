@@ -34,7 +34,7 @@ export const HabitRow: React.FC<HabitRowProps> = ({
     <div
       ref={sortable ? setNodeRef : undefined}
       style={style}
-      className="h-7 mb-1 flex items-center cursor-pointer hover:bg-gray-800 rounded-md px-2 group"
+      className="h-7 mb-1 flex items-center cursor-pointer hover:bg-gray-800 rounded-md group"
       onClick={() => onHabitClick(habit)}
     >
       <div className="flex items-center justify-between w-full select-none">

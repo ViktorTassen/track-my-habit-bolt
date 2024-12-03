@@ -49,7 +49,7 @@ export const MonthView: React.FC<MonthViewProps> = ({
       const habitColumnWidth = 208
       const availableWidth = containerWidth - habitColumnWidth
       const optimalDays = Math.floor(availableWidth / minDayWidth)
-      setDaysToShow(Math.max(7, Math.min(31, optimalDays)))
+      setDaysToShow(Math.max(3, Math.min(31, optimalDays)))
     }
 
     calculateDaysToShow()
@@ -70,11 +70,11 @@ export const MonthView: React.FC<MonthViewProps> = ({
   }
 
   const handleScrollLeft = () => {
-    setStartDate(subDays(startDate, 7))
+    setStartDate(subDays(startDate, 3))
   }
 
   const handleScrollRight = () => {
-    setStartDate(addDays(startDate, 7))
+    setStartDate(addDays(startDate, 3))
   }
 
   const handleScrollToToday = () => {

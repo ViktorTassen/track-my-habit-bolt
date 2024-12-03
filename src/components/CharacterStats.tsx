@@ -68,7 +68,7 @@ export const CharacterStats: React.FC<CharacterStatsProps> = ({
   }, [scoreEvents]);
 
   return (
-    <div className="relative bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl p-6 select-none min-h-[140px] overflow-visible">
+    <div className="relative bg-gradient-to-br from-indigo-500 rounded-xl p-3 select-none min-h-[140px] overflow-visible">
       <div className="absolute inset-0 overflow-hidden rounded-xl">
         <div className="absolute inset-0 bg-black/10" />
         <div className="absolute top-0 left-0 w-full h-16 bg-white/5 transform -skew-y-6" />
@@ -78,11 +78,11 @@ export const CharacterStats: React.FC<CharacterStatsProps> = ({
       <div className="relative z-10">
         {/* Desktop Layout (default) - Flex */}
         <div className="hidden sm:flex items-center gap-3">
-          <div className="relative w-48 h-40 flex-shrink-0">
+          <div className="relative w-44 h-40 flex-shrink-0">
             <div className="absolute inset-0 bg-white/5 rounded-full" />
             <button
               onClick={onCharacterClick}
-              className="absolute inset-0 scale-[2.1] translate-y-14 -translate-x-2 origin-bottom overflow-visible hover:scale-[2.2] transition-transform duration-200"
+              className="absolute inset-0 scale-[2.2] translate-y-16 -translate-x-2 origin-bottom overflow-visible hover:scale-[2.3] transition-transform duration-200"
             >
               <CharacterAnimation
                 key={animationKey}
@@ -130,7 +130,7 @@ export const CharacterStats: React.FC<CharacterStatsProps> = ({
                 <ScoreEventsList events={scoreEvents} />
               ) : (
                 <div className="flex gap-2">
-                  <StatsCard label="Active Habits" value={activeHabits} icon="habits" />
+                  <StatsCard label="Habits" value={activeHabits} icon="habits" />
                   <StatsCard label="Completed" value={totalCompleted} icon="completed" />
                   <StatsCard label="Best Streak" value={`${bestStreak} days`} icon="streak" />
                 </div>
@@ -140,14 +140,14 @@ export const CharacterStats: React.FC<CharacterStatsProps> = ({
         </div>
 
         {/* Mobile Layout - Grid */}
-        <div className="sm:hidden grid grid-cols-3 gap-4 items-center">
+        <div className="sm:hidden grid grid-cols-3 gap-0 items-center">
           {/* Character Section - Left Side */}
           <div className="col-span-1 flex justify-center">
-            <div className="relative w-32 h-32 flex-shrink-0">
-              <div className="absolute inset-0 bg-white/5 rounded-full" />
+            <div className="relative w-28 h-28 flex-shrink-0">
+              <div className="absolute inset-0" />
               <button
                 onClick={onCharacterClick}
-                className="absolute inset-0 scale-[2] translate-y-10 -translate-x-2 origin-bottom overflow-visible hover:scale-[2.2] transition-transform duration-200"
+                className="absolute inset-0 scale-[2.6] translate-y-14 -translate-x-2 origin-bottom overflow-visible hover:scale-[2.7] transition-transform duration-200"
               >
                 <CharacterAnimation
                   key={animationKey}
@@ -200,7 +200,7 @@ export const CharacterStats: React.FC<CharacterStatsProps> = ({
                 <ScoreEventsList events={scoreEvents} />
               ) : (
                 <div className="flex justify-between gap-2">
-                  <StatsCard label="Active Habits" value={activeHabits} icon="habits" />
+                  <StatsCard label="Active" value={activeHabits} icon="habits" />
                   <StatsCard label="Completed" value={totalCompleted} icon="completed" />
                   <StatsCard label="Best Streak" value={`${bestStreak} days`} icon="streak" />
                 </div>
