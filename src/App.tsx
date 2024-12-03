@@ -143,6 +143,7 @@ function App() {
               )}
           </div>
       </div>
+      <div className="sharethis-inline-share-buttons"></div>
     </div>
   )
 }
