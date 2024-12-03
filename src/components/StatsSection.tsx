@@ -64,7 +64,9 @@ export const StatsSection: React.FC<StatsSectionProps> = ({
         selectedCharacter={selectedCharacter}
         onCharacterClick={onCharacterClick}
       />
-      <MotivationCard />
+      <div className="hidden md:block">
+        <MotivationCard />
+      </div>
     </div>
   )
 }

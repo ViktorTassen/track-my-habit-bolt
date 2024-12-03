@@ -40,45 +40,29 @@ export const CharacterStats: React.FC<CharacterStatsProps> = ({
 
   useEffect(() => {
     if (scoreEvents.length > 0) {
-      console.log('Score events received:', scoreEvents);
-
-      // Clear any existing timeout to prevent overlap
       if (eventsTimeoutRef.current) {
-        console.log('Clearing existing timeout:', eventsTimeoutRef.current);
         clearTimeout(eventsTimeoutRef.current);
       }
 
-      // Update animation and show content
       setAnimationKey((prev) => prev + 1);
 
       cardsTimeoutRef.current = setTimeout(() => {
-        console.log('Hiding content');
         setShowContent(true);
       }, 600);
 
-
-      // Set new timeout
       eventsTimeoutRef.current = setTimeout(() => {
-        console.log('Timeout reached, hiding content');
         setShowContent(false);
-        eventsTimeoutRef.current = null; // Clear reference after timeout completes
+        eventsTimeoutRef.current = null;
         scoreEvents.length = 0;
       }, 5000);
-
-      console.log('New timeout set:', eventsTimeoutRef.current);
     }
 
-    // Cleanup on unmount or when scoreEvents changes
     return () => {
       if (eventsTimeoutRef.current) {
-        console.log('Cleaning up timeout:', eventsTimeoutRef.current);
         clearTimeout(eventsTimeoutRef.current);
-        // Don't nullify here to preserve debug logs and avoid confusion
       }
       if (cardsTimeoutRef.current) {
-        console.log('Cleaning up cards timeout:', cardsTimeoutRef.current);
         clearTimeout(cardsTimeoutRef.current);
-        // Don't nullify here to preserve debug logs and avoid
       }
     };
   }, [scoreEvents]);
@@ -92,7 +76,8 @@ export const CharacterStats: React.FC<CharacterStatsProps> = ({
       </div>
 
       <div className="relative z-10">
-        <div className="flex items-center gap-3">
+        {/* Desktop Layout (default) - Flex */}
+        <div className="hidden sm:flex items-center gap-3">
           <div className="relative w-48 h-40 flex-shrink-0">
             <div className="absolute inset-0 bg-white/5 rounded-full" />
             <button
@@ -145,6 +130,76 @@ export const CharacterStats: React.FC<CharacterStatsProps> = ({
                 <ScoreEventsList events={scoreEvents} />
               ) : (
                 <div className="flex gap-2">
+                  <StatsCard label="Active Habits" value={activeHabits} icon="habits" />
+                  <StatsCard label="Completed" value={totalCompleted} icon="completed" />
+                  <StatsCard label="Best Streak" value={`${bestStreak} days`} icon="streak" />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Layout - Grid */}
+        <div className="sm:hidden grid grid-cols-3 gap-4 items-center">
+          {/* Character Section - Left Side */}
+          <div className="col-span-1 flex justify-center">
+            <div className="relative w-32 h-32 flex-shrink-0">
+              <div className="absolute inset-0 bg-white/5 rounded-full" />
+              <button
+                onClick={onCharacterClick}
+                className="absolute inset-0 scale-[2] translate-y-10 -translate-x-2 origin-bottom overflow-visible hover:scale-[2.2] transition-transform duration-200"
+              >
+                <CharacterAnimation
+                  key={animationKey}
+                  isHit={scoreEvents.length > 0}
+                  className="w-full h-full object-contain"
+                  selectedCharacter={selectedCharacter}
+                />
+              </button>
+            </div>
+          </div>
+
+          {/* Level and Progress Section - Right Side */}
+          <div className="col-span-2 flex flex-col">
+            <div className="flex items-baseline justify-between mb-2">
+              <div className="flex flex-col gap-1">
+                <div className="flex items-baseline gap-2">
+                  <h2 className="font-quicksand text-lg font-bold text-white">Level {level}</h2>
+                  <div className="flex items-baseline gap-1">
+                    <span className="font-quicksand text-sm font-medium text-indigo-200">
+                      {points.toLocaleString()} pts
+                    </span>
+                    {totalNewPoints > 0 && (
+                      <span className="font-quicksand text-sm font-bold text-yellow-300 animate-bounce">
+                        +{totalNewPoints}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <LevelTitle level={level} />
+              </div>
+            </div>
+
+            <div className="mb-2">
+              <div className="h-2 bg-black/20 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-yellow-300 to-yellow-500 transition-all duration-500 ease-out"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+              <div className="flex justify-end text-[10px] text-indigo-200/90 mt-0.5">
+                <span>{nextThreshold.toLocaleString()}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Stats Cards Row - Full Width */}
+          <div className="col-span-3">
+            <div className="h-16 overflow-hidden">
+              {showContent && scoreEvents.length > 0 ? (
+                <ScoreEventsList events={scoreEvents} />
+              ) : (
+                <div className="flex justify-between gap-2">
                   <StatsCard label="Active Habits" value={activeHabits} icon="habits" />
                   <StatsCard label="Completed" value={totalCompleted} icon="completed" />
                   <StatsCard label="Best Streak" value={`${bestStreak} days`} icon="streak" />

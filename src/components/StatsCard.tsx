@@ -55,14 +55,15 @@ export const StatsCard: React.FC<StatsCardProps> = ({
 
   return (
     <div className={`
-      flex-2 rounded-lg px-2 py-1.5
+      flex-1 rounded-lg px-2 py-1.5
       border border-white/20 
       backdrop-blur-sm
       transition-all duration-200
       hover:bg-white/10
+      min-w-[100px]
       ${className}
     `}>
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center justify-center sm:justify-start gap-1.5">
         {icon && (
           <div className="text-indigo-200/90">
             {getIcon()}
@@ -70,7 +71,7 @@ export const StatsCard: React.FC<StatsCardProps> = ({
         )}
         <div className="text-[10px] text-indigo-200/90">{label}</div>
       </div>
-      <div className="text-sm font-bold text-white mt-0.5">{value}</div>
+      <div className="text-sm font-bold text-white mt-0.5 text-center sm:text-left">{value}</div>
     </div>
   )
 }
