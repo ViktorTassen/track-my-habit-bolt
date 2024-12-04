@@ -11,3 +11,7 @@ assets/characters/*
 !assets/characters/CutePenguin/Character02/
 
 dist/
+
+public/assets/characters/*
+!public/assets/characters/CuteCat/Character01/
+!public/assets/characters/CuteCat/Character02/
