@@ -57,109 +57,113 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-900 p-4 sm:p-8">
       <div className="max-w-6xl mx-auto">
-          <Header
-            onOpenCharacterSelect={() => setShowCharacterSelect(true)}
-            onOpenHelp={() => setShowHelp(true)}
+        <Header
+          onOpenCharacterSelect={() => setShowCharacterSelect(true)}
+          onOpenHelp={() => setShowHelp(true)}
+        />
+
+        <div className="space-y-6">
+          <StatsSection
+            habits={habits}
+            logs={logs}
+            points={progress.points}
+            level={progress.level}
+            scoreEvents={scoreEvents}
+            selectedCharacter={progress.selectedCharacter ?? { character: 'CuteCat', variant: 'Character01' }}
+            onCharacterClick={() => setShowCharacterSelect(true)}
           />
 
-          <div className="space-y-6">
-              <StatsSection
-                habits={habits}
-                logs={logs}
-                points={progress.points}
-                level={progress.level}
-                scoreEvents={scoreEvents}
-                selectedCharacter={progress.selectedCharacter ?? { character: 'CuteCat', variant: 'Character01' }}
-                onCharacterClick={() => setShowCharacterSelect(true)}
-              />
+          <Modal
+            isOpen={showForm || editingHabit !== null}
+            onClose={() => {
+              setShowForm(false)
+              setEditingHabit(null)
+            }}
+          >
+            <HabitForm
+              onSubmit={handleHabitSubmit}
+              onCancel={() => {
+                setShowForm(false)
+                setEditingHabit(null)
+              }}
+              onDelete={editingHabit ? () => {
+                handleDeleteHabit(editingHabit.id)
+                setEditingHabit(null)
+              } : undefined}
+              onArchive={editingHabit && !editingHabit.archived ? () => {
+                handleArchiveHabit(editingHabit.id)
+                setEditingHabit(null)
+              } : undefined}
+              onUnarchive={editingHabit?.archived ? () => {
+                handleUnarchiveHabit(editingHabit.id)
+                setEditingHabit(null)
+              } : undefined}
+              initialHabit={editingHabit}
+            />
+          </Modal>
 
-              <Modal
-                isOpen={showForm || editingHabit !== null}
-                onClose={() => {
-                  setShowForm(false)
-                  setEditingHabit(null)
-                }}
-              >
-                <HabitForm
-                  onSubmit={handleHabitSubmit}
-                  onCancel={() => {
-                    setShowForm(false)
-                    setEditingHabit(null)
-                  }}
-                  onDelete={editingHabit ? () => {
-                    handleDeleteHabit(editingHabit.id)
-                    setEditingHabit(null)
-                  } : undefined}
-                  onArchive={editingHabit && !editingHabit.archived ? () => {
-                    handleArchiveHabit(editingHabit.id)
-                    setEditingHabit(null)
-                  } : undefined}
-                  onUnarchive={editingHabit?.archived ? () => {
-                    handleUnarchiveHabit(editingHabit.id)
-                    setEditingHabit(null)
-                  } : undefined}
-                  initialHabit={editingHabit}
-                />
-              </Modal>
+          <HelpModal isOpen={showHelp} onClose={() => setShowHelp(false)} />
 
-              <HelpModal isOpen={showHelp} onClose={() => setShowHelp(false)} />
+          <CharacterSelectionModal
+            isOpen={showCharacterSelect}
+            onClose={() => setShowCharacterSelect(false)}
+            selectedCharacter={progress.selectedCharacter}
+            onSelectCharacter={handleCharacterSelect}
+            level={progress.level}
+            points={progress.points}
+          />
 
-              <CharacterSelectionModal
-                isOpen={showCharacterSelect}
-                onClose={() => setShowCharacterSelect(false)}
-                selectedCharacter={progress.selectedCharacter}
-                onSelectCharacter={handleCharacterSelect}
-                level={progress.level}
-                points={progress.points}
-              />
+          {habits.length > 0 ? (
+            <MonthView
+              habits={habits}
+              logs={logs}
+              onToggleHabit={handleToggleHabit}
+              onHabitClick={setEditingHabit}
+              onReorderHabits={handleReorderHabits}
+              onAddHabit={() => setShowForm(true)}
+            />
+          ) : (
+            <div className="text-center py-12 bg-gray-800 rounded-lg shadow-sm">
+              <p className="text-gray-400 mb-4">
+                No habits added yet. Click "Add Habit" to get started!
+              </p>
+            </div>
+          )}
 
-              {habits.length > 0 ? (
-                <MonthView
-                  habits={habits}
-                  logs={logs}
-                  onToggleHabit={handleToggleHabit}
-                  onHabitClick={setEditingHabit}
-                  onReorderHabits={handleReorderHabits}
-                  onAddHabit={() => setShowForm(true)}
-                />
-              ) : (
-                <div className="text-center py-12 bg-gray-800 rounded-lg shadow-sm">
-                  <p className="text-gray-400 mb-4">
-                    No habits added yet. Click "Add Habit" to get started!
-                  </p>
-                </div>
-              )}
 
-              
-          </div>
-         
+        </div>
+        <div className="text-gray-400 text-xs pt-10">
+
+
+        <div className="mt-4 flex">
+          <div className="sharethis-inline-share-buttons"></div>
+        </div>
+        <div className="my-4">
+        <p>
+            Track My Habit is free.
+          </p>
+          <p>
+            Love it? Share it with friends!
+          </p>
+        </div>
       </div>
-     
-      <div className="text-gray-400 text-xs pt-10">
-  <div className="my-4 mx-auto max-w-xl text-center">
-    <p>
-      Track My Habit is free and designed to make your life better. 
-      If it’s helped you, share it with friends and include a screenshot of your success to inspire others!
-    </p>
-  </div>
 
-  <div className="mt-4 flex justify-center">
-    <div className="sharethis-inline-share-buttons"></div>
-  </div>
-</div>
+
+      </div>
+
+      
 
 
 
-
-    <div className="flex justify-end gap-4 pt-40">
-                  <ClearDataSection
-                    habits={habits.length}
-                    onClearScore={handleClearScore}
-                    onClearAll={handleClearAll}
-                    showConfirm={showClearConfirm}
-                    onCancelClear={() => setShowClearConfirm(null)}
-                  />
-                </div>
+      <div className="flex justify-end gap-4 pt-40">
+        <ClearDataSection
+          habits={habits.length}
+          onClearScore={handleClearScore}
+          onClearAll={handleClearAll}
+          showConfirm={showClearConfirm}
+          onCancelClear={() => setShowClearConfirm(null)}
+        />
+      </div>
     </div>
   )
 }
