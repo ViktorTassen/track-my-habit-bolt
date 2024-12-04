@@ -135,8 +135,8 @@ function App() {
         <div className="text-gray-400 text-xs pt-10">
 
 
-        <div className="mt-4 flex">
-          <div className="sharethis-inline-share-buttons"></div>
+        <div className="mt-4 flex z-1">
+          <div className="sharethis-inline-share-buttons z-1"></div>
         </div>
         <div className="my-4">
         <p>
