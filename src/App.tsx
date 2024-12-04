@@ -130,8 +130,28 @@ function App() {
                 </div>
               )}
 
-              {habits.length > 0 && (
-                <div className="flex justify-end gap-4 pt-8 border-t border-gray-700">
+              
+          </div>
+         
+      </div>
+     
+      <div className="text-gray-400 text-xs pt-10">
+  <div className="my-4 mx-auto max-w-xl text-center">
+    <p>
+      Track My Habit is free and designed to make your life better. 
+      If it’s helped you, share it with friends and include a screenshot of your success to inspire others!
+    </p>
+  </div>
+
+  <div className="mt-4 flex justify-center">
+    <div className="sharethis-inline-share-buttons"></div>
+  </div>
+</div>
+
+
+
+
+    <div className="flex justify-end gap-4 pt-40">
                   <ClearDataSection
                     habits={habits.length}
                     onClearScore={handleClearScore}
@@ -140,10 +160,6 @@ function App() {
                     onCancelClear={() => setShowClearConfirm(null)}
                   />
                 </div>
-              )}
-          </div>
-      </div>
-      <div className="sharethis-inline-share-buttons"></div>
     </div>
   )
 }

@@ -12,7 +12,7 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="max-w-3xl">
       <div className="space-y-6">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500">
+          <h2 className="font-quicksand text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500">
             Level Up Your Habits
           </h2>
           <p className="mt-1 text-sm text-gray-400">
@@ -30,8 +30,8 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-white">Daily Points</h3>
-                <div className="text-2xl font-bold text-indigo-400">+{POINTS.BASE}</div>
+                <h3 className="font-quicksand text-lg font-semibold text-white">Daily Points</h3>
+                <div className="font-quicksand text-2xl font-bold text-indigo-400">+{POINTS.BASE}</div>
               </div>
             </div>
             <p className="text-sm text-gray-400">Complete any habit to earn base points</p>
@@ -44,8 +44,8 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
                 <span className="text-xl">🔥</span>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-white">Streak Bonuses</h3>
-                <div className="text-2xl font-bold text-orange-400">
+                <h3 className="font-quicksand text-lg font-semibold text-white">Streak Bonuses</h3>
+                <div className="font-quicksand text-2xl font-bold text-orange-400">
                   Up to +{Math.max(...Object.values(POINTS.STREAK_MILESTONES))}
                 </div>
               </div>
@@ -54,7 +54,7 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
               {Object.entries(POINTS.STREAK_MILESTONES).slice(0, 3).map(([days, points]) => (
                 <div key={days} className="flex justify-between text-sm">
                   <span className="text-gray-400">{days} days</span>
-                  <span className="text-orange-400">+{points}</span>
+                  <span className="font-quicksand text-orange-400">+{points}</span>
                 </div>
               ))}
             </div>
@@ -67,7 +67,7 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
                 <span className="text-xl">⚡</span>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-white">Daily Combos</h3>
+                <h3 className="font-quicksand text-lg font-semibold text-white">Daily Combos</h3>
                 <div className="text-2xl font-bold text-purple-400">
                   Up to +{Math.max(...Object.values(POINTS.MULTI_HABIT_COMPLETION))}
                 </div>
@@ -77,7 +77,7 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
               {Object.entries(POINTS.MULTI_HABIT_COMPLETION).slice(0, 3).map(([count, points]) => (
                 <div key={count} className="flex justify-between text-sm">
                   <span className="text-gray-400">{count} habits</span>
-                  <span className="text-purple-400">+{points}</span>
+                  <span className="font-quicksand text-purple-400">+{points}</span>
                 </div>
               ))}
             </div>
@@ -90,34 +90,12 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
                 <span className="text-xl">🏆</span>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-white">Monthly Master</h3>
-                <div className="text-2xl font-bold text-green-400">+{POINTS.MONTHLY_COMPLETION}</div>
+                <h3 className="font-quicksand text-lg font-semibold text-white">Monthly Master</h3>
+                <div className="font-quicksand text-2xl font-bold text-green-400">+{POINTS.MONTHLY_COMPLETION}</div>
               </div>
             </div>
             <p className="text-sm text-gray-400">Complete a habit every day of the month</p>
           </div>
-        </div>
-
-        {/* Pro Tips */}
-        <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-4 border border-gray-700">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="text-xl">💡</span>
-            <h3 className="text-lg font-semibold text-white">Pro Tips</h3>
-          </div>
-          <ul className="grid gap-2 text-sm text-gray-400">
-            <li className="flex items-start gap-2">
-              <span className="text-yellow-500 mt-1">•</span>
-              Complete multiple habits daily for combo bonuses
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-yellow-500 mt-1">•</span>
-              Maintain streaks to unlock milestone rewards
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-yellow-500 mt-1">•</span>
-              Level up to unlock new character variants
-            </li>
-          </ul>
         </div>
       </div>
     </Modal>

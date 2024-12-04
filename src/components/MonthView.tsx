@@ -97,7 +97,7 @@ export const MonthView: React.FC<MonthViewProps> = ({
         />
 
         <div ref={containerRef} className="flex">
-          <div className="w-52 flex-shrink-0 mr-2">
+          <div className="w-44 flex-shrink-0 mr-2">
             <div className="h-16 mb-1 flex items-end justify-end pb-1">
               <div className="text-xs font-medium text-gray-400 select-none">
                 Current / Best

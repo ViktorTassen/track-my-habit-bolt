@@ -3,14 +3,43 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
-    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=674f8b13591ff10019fe3043&product=inline-share-buttons&source=platform" async="async"></script>
-    <title>Track My Habit</title>
+    <meta name="description" content="Track My Habit - Web App and Chrome extension to help you build and maintain habits, track streaks, earn rewards, and level up!" />
+    <meta name="keywords" content="habit tracker, Chrome extension, productivity, streaks, goals, rewards, Track My Habit" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Track My Habit - Build and Maintain Habits" />
+    <meta property="og:description" content="Track your habits and stay motivated with streaks, rewards, and a unique leveling system!" />
+    <meta property="og:url" content="https://trackmyhabit.com" />
+    <meta property="og:type" content="website" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Track My Habit - Build and Maintain Habits" />
+    <meta name="twitter:description" content="Stay consistent with your habits and earn rewards along the way!" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet" />
+
+    <!-- ShareThis Inline Share Buttons -->
+    <script
+      type="text/javascript"
+      src="https://platform-api.sharethis.com/js/sharethis.js#property=674f8b13591ff10019fe3043&product=inline-share-buttons&source=platform"
+      async="async"
+    ></script>
+
+    <title>Track My Habit - Habit Tracker and Streak Builder</title>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Main Application Script -->
+    <script type="module" src="/src/main.tsx" loading="lazy"></script>
+
   </body>
 </html>
