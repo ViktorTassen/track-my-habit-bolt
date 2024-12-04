@@ -6,5 +6,8 @@ node_modules/
 
 assets/characters/*
 !assets/characters/CuteCat/Character01/
+!assets/characters/CuteCat/Character02/
+!assets/characters/CutePenguin/Character01/
+!assets/characters/CutePenguin/Character02/
 
 dist/
