@@ -1,5 +1,4 @@
 import type { CharacterType } from './characterConfig'
-import type { AnimationConfig } from '../utils/animation/types'
 
 export const CHARACTER_FRAME_CONFIG: Record<CharacterType, { Hit: number; Idle: number }> = {
   CuteCat: {
@@ -40,13 +39,15 @@ export const CHARACTER_FRAME_CONFIG: Record<CharacterType, { Hit: number; Idle: 
   }
 } as const
 
-export const ANIMATION_CONFIG: AnimationConfig = {
-  frameDuration: 30,
+export const ANIMATION_CONFIG = {
+  frameDuration: 30, // milliseconds per frame
   defaultCharacter: {
     character: 'CuteCat',
     variant: 'Character01'
   }
-}
+} as const
+
+export type AnimationType = keyof typeof CHARACTER_FRAME_CONFIG.CuteCat
 
 export const BONUS_ICONS = {
   streak: '🔥',
@@ -56,3 +57,20 @@ export const BONUS_ICONS = {
 } as const
 
 export type BonusType = keyof typeof BONUS_ICONS
+
+export const generateFramePaths = (character: CharacterType, variant: string, animation: AnimationType) => {
+  const frames = []
+  const frameCount = CHARACTER_FRAME_CONFIG[character][animation]
+
+  for (let i = 0; i < frameCount; i++) {
+    frames.push({
+      src: `/assets/characters/${character}/${variant}/${animation}/${String(i).padStart(2, '0')}.png`,
+      duration: ANIMATION_CONFIG.frameDuration
+    })
+  }
+  return frames
+}
+
+export const getCharacterPreviewPath = (character: string, variant: string): string => {
+  return `/assets/characters/${character}/${variant}/Idle/00.png`
+}

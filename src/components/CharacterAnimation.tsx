@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useCharacterAnimation } from '../utils/animation'
+import { useCharacterAnimation } from '../hooks/useCharacterAnimation'
 import type { CharacterSelection } from '../types'
 
 interface CharacterAnimationProps {

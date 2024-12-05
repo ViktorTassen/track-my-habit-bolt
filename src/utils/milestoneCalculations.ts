@@ -1,5 +1,5 @@
-import type { ScoreEvent } from '../../types'
-import type { MilestoneAchievement } from './achievementTypes'
+import type { ScoreEvent } from '../types'
+import type { MilestoneAchievement } from './milestoneTypes'
 import { calculateComboScore } from './comboCalculations'
 
 export const calculateMilestoneComboBonus = (

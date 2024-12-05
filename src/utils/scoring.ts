@@ -1,10 +1,72 @@
-import type { Habit, HabitLog, ScoreEvent, UserProgress } from '../../types'
-import { POINTS } from '../../config/gameConfig'
-import { calculateMilestoneComboBonus } from '../milestones/milestoneCalculations'
-import { calculateStreak } from '../streaks/streakCalculations'
-import { isMonthCompleted } from './monthlyCalculations'
-import { calculateLevel } from './levelCalculations'
-import type { MilestoneAchievement } from '../milestones/achievementTypes'
+import { differenceInDays, format, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns'
+import type { Habit, HabitLog, ScoreEvent, UserProgress } from '../types'
+import type { MilestoneAchievement } from './milestoneTypes'
+import { POINTS, LEVEL_THRESHOLDS, LEVEL_TITLES } from '../config/gameConfig'
+import { calculateMilestoneComboBonus } from './milestoneCalculations'
+
+export { LEVEL_THRESHOLDS }
+
+export const calculateLevel = (points: number): number => {
+  for (let i = 0; i < LEVEL_THRESHOLDS.length; i++) {
+    if (points < LEVEL_THRESHOLDS[i]) {
+      return i + 1
+    }
+  }
+  return LEVEL_THRESHOLDS.length + 1
+}
+
+export const getLevelTitle = (level: number): string => {
+  return LEVEL_TITLES[Math.min(level - 1, LEVEL_TITLES.length - 1)]
+}
+
+export const getNextLevelThreshold = (points: number): number => {
+  const level = calculateLevel(points)
+  return LEVEL_THRESHOLDS[level - 1] || LEVEL_THRESHOLDS[LEVEL_THRESHOLDS.length - 1]
+}
+
+export const getPreviousLevelThreshold = (points: number): number => {
+  const level = calculateLevel(points)
+  return level > 1 ? LEVEL_THRESHOLDS[level - 2] : 0
+}
+
+export const calculateStreak = (habitId: string, logs: HabitLog[], lastDate?: string): number => {
+  if (!lastDate) return 0
+
+  const habitLogs = logs
+    .filter(log => log.habitId === habitId && log.completed)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+
+  let streak = 0
+  let currentDate = new Date(lastDate)
+
+  for (const log of habitLogs) {
+    const logDate = new Date(log.date)
+    if (logDate > currentDate) continue
+
+    const diffDays = Math.abs(differenceInDays(currentDate, logDate))
+    if (diffDays > 1) break
+
+    streak++
+    currentDate = logDate
+  }
+
+  return streak
+}
+
+const isMonthCompleted = (habitId: string, date: string, logs: HabitLog[]): boolean => {
+  const currentDate = new Date(date)
+  const monthStart = startOfMonth(currentDate)
+  const monthEnd = endOfMonth(currentDate)
+  const daysInMonth = eachDayOfInterval({ start: monthStart, end: monthEnd })
+
+  return daysInMonth.every(day => 
+    logs.some(log => 
+      log.habitId === habitId && 
+      log.date === format(day, 'yyyy-MM-dd') && 
+      log.completed
+    )
+  )
+}
 
 export const calculatePointsForHabit = (
   habit: Habit,

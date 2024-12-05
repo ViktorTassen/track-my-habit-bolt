@@ -26,6 +26,7 @@ export const CharacterSelectionModal: React.FC<CharacterSelectionModalProps> = (
 
   const handleCharacterSelect = async (selection: CharacterSelection) => {
     onSelectCharacter(selection)
+    // Save the progress immediately when character is selected
     await saveProgress({
       points,
       level,
@@ -70,10 +71,7 @@ export const CharacterSelectionModal: React.FC<CharacterSelectionModalProps> = (
                   return (
                     <button
                       key={variantKey}
-                      onClick={() => isUnlocked && handleCharacterSelect({ 
-                        character: characterKey as any, 
-                        variant: variantKey 
-                      })}
+                      onClick={() => isUnlocked && handleCharacterSelect({ character: characterKey, variant: variantKey })}
                       disabled={!isUnlocked}
                       className={`
                         relative p-1 rounded-lg border transition-all select-none
