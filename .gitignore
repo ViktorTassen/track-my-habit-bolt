@@ -4,14 +4,18 @@ node_modules/
 # Ignore macOS system files
 .DS_Store
 
-assets/characters/*
-!assets/characters/CuteCat/Character01/
-!assets/characters/CuteCat/Character02/
-!assets/characters/CutePenguin/Character01/
-!assets/characters/CutePenguin/Character02/
-
 dist/
 
+# Ignore everything in public/assets/characters/
 public/assets/characters/*
+
+# Allow only CuteCat/Character01 and CuteCat/Character02
+!public/assets/characters/CuteCat/
+public/assets/characters/CuteCat/*
 !public/assets/characters/CuteCat/Character01/
 !public/assets/characters/CuteCat/Character02/
+
+# Ignore all files inside CuteCat, except the allowed folders
+public/assets/characters/CuteCat/**/*
+!public/assets/characters/CuteCat/Character01/**
+!public/assets/characters/CuteCat/Character02/**
