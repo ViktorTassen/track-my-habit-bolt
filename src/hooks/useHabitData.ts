@@ -47,7 +47,10 @@ export function useHabitData() {
       const updatedProgress = {
         ...savedProgress,
         selectedCharacter: savedProgress.selectedCharacter || defaultCharacter,
-        level: calculateLevel(savedProgress.points)
+        level: calculateLevel(savedProgress.points),
+        streaks: savedProgress.streaks || {},
+        lastCompletedDates: savedProgress.lastCompletedDates || {},
+        awardedStreakMilestones: savedProgress.awardedStreakMilestones || {}
       }
       
       setProgress(updatedProgress)
@@ -167,7 +170,8 @@ export function useHabitData() {
       const newProgress = {
         ...updatedProgress,
         points: totalPoints,
-        level
+        level,
+        selectedCharacter: progress.selectedCharacter // Preserve the selected character
       }
       
       await saveProgress(newProgress)
@@ -179,7 +183,8 @@ export function useHabitData() {
       const newProgress = {
         ...updatedProgress,
         points: totalPoints,
-        level
+        level,
+        selectedCharacter: progress.selectedCharacter // Preserve the selected character
       }
       
       await saveProgress(newProgress)
@@ -218,7 +223,7 @@ export function useHabitData() {
       streaks: {},
       lastCompletedDates: {},
       awardedStreakMilestones: {},
-      selectedCharacter: progress.selectedCharacter
+      selectedCharacter: progress.selectedCharacter // Preserve the selected character
     }
     
     await saveProgress(resetProgress)
@@ -240,7 +245,7 @@ export function useHabitData() {
       streaks: {},
       lastCompletedDates: {},
       awardedStreakMilestones: {},
-      selectedCharacter: progress.selectedCharacter
+      selectedCharacter: progress.selectedCharacter // Preserve the selected character
     }
     
     await saveProgress(resetProgress)

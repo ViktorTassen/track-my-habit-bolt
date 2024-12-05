@@ -3,6 +3,7 @@ import { Modal } from './Modal'
 import { CHARACTERS } from '../config/characterConfig'
 import { VARIANT_UNLOCK_LEVELS, isVariantUnlocked, getPointsToNextUnlock } from '../config/unlockConfig'
 import type { CharacterSelection } from '../types'
+import { saveProgress } from '../storage'
 
 interface CharacterSelectionModalProps {
   isOpen: boolean
@@ -22,6 +23,19 @@ export const CharacterSelectionModal: React.FC<CharacterSelectionModalProps> = (
   points
 }) => {
   const pointsToNextUnlock = getPointsToNextUnlock(points)
+
+  const handleCharacterSelect = async (selection: CharacterSelection) => {
+    onSelectCharacter(selection)
+    // Save the progress immediately when character is selected
+    await saveProgress({
+      points,
+      level,
+      streaks: {},
+      lastCompletedDates: {},
+      awardedStreakMilestones: {},
+      selectedCharacter: selection
+    })
+  }
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="max-w-4xl">
@@ -57,7 +71,7 @@ export const CharacterSelectionModal: React.FC<CharacterSelectionModalProps> = (
                   return (
                     <button
                       key={variantKey}
-                      onClick={() => isUnlocked && onSelectCharacter({ character: characterKey, variant: variantKey })}
+                      onClick={() => isUnlocked && handleCharacterSelect({ character: characterKey, variant: variantKey })}
                       disabled={!isUnlocked}
                       className={`
                         relative p-1 rounded-lg border transition-all select-none
