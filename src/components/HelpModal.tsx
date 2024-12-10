@@ -22,7 +22,7 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
 
         <div className="grid gap-4 sm:grid-cols-2">
           {/* Daily Points */}
-          <div className="bg-gradient-to-br from-indigo-500/20 to-indigo-600/20 rounded-xl p-4 border border-indigo-500/20">
+          <div className="bg-gradient-to-b from-indigo-500/20 to-indigo-600/20 rounded-xl p-4 border border-indigo-500/20">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center">
                 <svg className="w-5 h-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -38,7 +38,7 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
           </div>
 
           {/* Streak Bonuses */}
-          <div className="bg-gradient-to-br from-orange-500/20 to-red-600/20 rounded-xl p-4 border border-orange-500/20">
+          <div className="bg-gradient-to-b from-orange-500/20 to-red-600/20 rounded-xl p-4 border border-orange-500/20">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center">
                 <span className="text-xl">🔥</span>
@@ -61,7 +61,7 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
           </div>
 
           {/* Combo Bonuses */}
-          <div className="bg-gradient-to-br from-purple-500/20 to-pink-600/20 rounded-xl p-4 border border-purple-500/20">
+          <div className="bg-gradient-to-b from-purple-500/20 to-pink-600/20 rounded-xl p-4 border border-purple-500/20">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
                 <span className="text-xl">⚡</span>
@@ -84,7 +84,7 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
           </div>
 
           {/* Monthly Achievement */}
-          <div className="bg-gradient-to-br from-green-500/20 to-emerald-600/20 rounded-xl p-4 border border-green-500/20">
+          <div className="bg-gradient-to-b from-green-500/20 to-emerald-600/20 rounded-xl p-4 border border-green-500/20">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
                 <span className="text-xl">🏆</span>

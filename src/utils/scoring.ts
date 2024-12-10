@@ -97,7 +97,7 @@ export const calculatePointsForHabit = (
     events.push({
       type: 'streak',
       points: POINTS.MONTHLY_COMPLETION,
-      details: `Completed every day this month for ${habit.name}!`,
+      details: `Full month ${habit.name}!`,
       timestamp: new Date(date).getTime()
     })
   }

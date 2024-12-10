@@ -15,6 +15,7 @@ interface CharacterStatsProps {
   scoreEvents?: ScoreEvent[];
   selectedCharacter: CharacterSelection;
   onCharacterClick?: () => void;
+  onOpenHelp?: () => void;
 }
 
 export const CharacterStats: React.FC<CharacterStatsProps> = ({
@@ -26,6 +27,7 @@ export const CharacterStats: React.FC<CharacterStatsProps> = ({
   scoreEvents = [],
   selectedCharacter,
   onCharacterClick,
+  onOpenHelp,
 }) => {
   const [showContent, setShowContent] = useState(false);
   const [animationKey, setAnimationKey] = useState(0);
@@ -68,7 +70,7 @@ export const CharacterStats: React.FC<CharacterStatsProps> = ({
   }, [scoreEvents]);
 
   return (
-    <div className="relative bg-gradient-to-br from-indigo-500 rounded-xl p-3 select-none min-h-[140px] overflow-visible">
+    <div className="relative bg-gradient-to-b from-indigo-500 rounded-xl p-3 select-none min-h-[140px] overflow-visible">
       <div className="absolute inset-0 overflow-hidden rounded-xl">
         <div className="absolute inset-0 bg-black/10" />
         <div className="absolute top-0 left-0 w-full h-16 bg-white/5 transform -skew-y-6" />
@@ -78,11 +80,11 @@ export const CharacterStats: React.FC<CharacterStatsProps> = ({
       <div className="relative z-10">
         {/* Desktop Layout (default) - Flex */}
         <div className="hidden sm:flex items-center gap-3">
-          <div className="relative w-44 h-40 flex-shrink-0">
+          <div className="relative w-36 h-32 flex-shrink-0">
             <div className="absolute inset-0 bg-white/5 rounded-full" />
             <button
               onClick={onCharacterClick}
-              className="absolute inset-0 scale-[2.2] translate-y-16 -translate-x-2 origin-bottom overflow-visible hover:scale-[2.3] transition-transform duration-200"
+              className="absolute inset-0 scale-[2.3] translate-y-16 -translate-x-2 origin-bottom overflow-visible hover:scale-[2.4] transition-transform duration-200"
             >
               <CharacterAnimation
                 key={animationKey}
@@ -107,7 +109,28 @@ export const CharacterStats: React.FC<CharacterStatsProps> = ({
                         +{totalNewPoints}
                       </span>
                     )}
+
                   </div>
+
+                  <button
+                      onClick={onOpenHelp}
+                      className="w-6 h-6 flex items-center justify-center text-indigo-400 bg-indigo-900/30 rounded-full hover:bg-indigo-900/50 transition"
+                      aria-label="How Points Work"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </button>
                 </div>
                 <LevelTitle level={level} />
               </div>
@@ -130,7 +153,7 @@ export const CharacterStats: React.FC<CharacterStatsProps> = ({
                 <ScoreEventsList events={scoreEvents} />
               ) : (
                 <div className="flex gap-2">
-                  <StatsCard label="Habits" value={activeHabits} icon="habits" />
+                  <StatsCard className="hidden lg:block" label="Habits" value={activeHabits} icon="habits" />
                   <StatsCard label="Completed" value={totalCompleted} icon="completed" />
                   <StatsCard label="Best Streak" value={`${bestStreak} days`} icon="streak" />
                 </div>

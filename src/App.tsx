@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Header } from "./components/Header"
+// import { Header } from "./components/Header"
 import { HabitForm } from "./components/HabitForm"
 import { MonthView } from "./components/MonthView"
 import { Modal } from "./components/Modal"
@@ -55,14 +55,13 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 p-4 sm:p-8">
+    <div className="min-h-screen bg-neutral-900 p-4 sm:p-4">
       <div className="max-w-6xl mx-auto">
-        <Header
-          // onOpenCharacterSelect={() => setShowCharacterSelect(true)}
+        {/* <Header
           onOpenHelp={() => setShowHelp(true)}
-        />
+        /> */}
 
-        <div className="space-y-6">
+        <div className="space-y-4">
           <StatsSection
             habits={habits}
             logs={logs}
@@ -71,6 +70,7 @@ function App() {
             scoreEvents={scoreEvents}
             selectedCharacter={progress.selectedCharacter ?? { character: 'CuteCat', variant: 'Character01' }}
             onCharacterClick={() => setShowCharacterSelect(true)}
+            onOpenHelp={() => setShowHelp(true)}
           />
 
           <Modal
@@ -113,8 +113,7 @@ function App() {
             points={progress.points}
           />
 
-          {habits.length > 0 ? (
-            <MonthView
+          <MonthView
               habits={habits}
               logs={logs}
               onToggleHabit={handleToggleHabit}
@@ -122,33 +121,8 @@ function App() {
               onReorderHabits={handleReorderHabits}
               onAddHabit={() => setShowForm(true)}
             />
-          ) : (
-            <div className="text-center py-12 bg-gray-800 rounded-lg shadow-sm">
-              <p className="text-gray-400 mb-4">
-                No habits added yet. Click "Add Habit" to get started!
-              </p>
-            </div>
-          )}
-
 
         </div>
-        <div className="text-gray-400 text-xs pt-10">
-
-
-        <div className="mt-4 flex z-1">
-          <div className="sharethis-inline-share-buttons z-1"></div>
-        </div>
-        <div className="my-4">
-        <p>
-            Track My Habit is free.
-          </p>
-          <p>
-            Love it? Share it with friends!
-          </p>
-        </div>
-      </div>
-
-
       </div>
 
       

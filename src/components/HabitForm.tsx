@@ -12,16 +12,14 @@ interface HabitFormProps {
 }
 
 const PRESET_COLORS = [
-  '#4F46E5', // Indigo
-  '#DC2626', // Red
-  '#059669', // Green
-  '#D97706', // Yellow
-  '#7C3AED', // Purple
-  '#2563EB', // Blue
-  '#DB2777', // Pink
-  '#EA580C', // Orange
+  '#0667d2', // Blue
+  '#4c4ab1', // Violet
+  '#9247b7', // Purple
+  '#2fa54d', // Green
+  '#d2a906', // Yellow
+  '#d27d06', // Orange
+  '#d2352c', // Red
   '#0891B2', // Cyan
-  '#4B5563', // Gray
 ]
 
 export const HabitForm: React.FC<HabitFormProps> = ({
@@ -33,7 +31,7 @@ export const HabitForm: React.FC<HabitFormProps> = ({
   initialHabit = null
 }) => {
   const [name, setName] = useState(initialHabit?.name || "")
-  const [color, setColor] = useState(initialHabit?.color || "#4F46E5")
+  const [color, setColor] = useState(initialHabit?.color || "#0667d2")
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [showArchiveConfirm, setShowArchiveConfirm] = useState(false)
   const [showUnarchiveConfirm, setShowUnarchiveConfirm] = useState(false)
@@ -192,7 +190,7 @@ export const HabitForm: React.FC<HabitFormProps> = ({
                 showCustomPicker ? 'ring-2 ring-indigo-400' : ''
               }`}
             >
-              <div className="w-4 h-4 rounded-full bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500" />
+              <div className="w-4 h-4 rounded-full bg-gradient-to-b from-pink-500 via-purple-500 to-indigo-500" />
               Custom Color
             </button>
           </div>

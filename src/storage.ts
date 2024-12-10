@@ -11,7 +11,7 @@ const DEFAULT_HABITS: Habit[] = [
   {
     id: "default-1",
     name: "Daily Exercise",
-    color: "#4F46E5",
+    color: "#0667d2",
     createdAt: new Date().toISOString(),
     frequency: "daily",
     order: 0
