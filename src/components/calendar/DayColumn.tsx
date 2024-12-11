@@ -1,12 +1,13 @@
 import React from 'react'
 import { format, isToday, isFirstDayOfMonth } from 'date-fns'
-import type { Habit } from '../../types'
+import type { Habit, HabitLog } from '../../types'
+import { isHabitCompleted } from '../../utils/habits'
 
 interface DayColumnProps {
   day: Date
   activeHabits: Habit[]
   archivedHabits: Habit[]
-  isHabitCompleted: (habitId: string, date: string) => boolean
+  logs: HabitLog[]
   onToggleHabit: (habitId: string, date: string) => void
   showArchived?: boolean
 }
@@ -15,7 +16,7 @@ export const DayColumn: React.FC<DayColumnProps> = ({
   day,
   activeHabits,
   archivedHabits,
-  isHabitCompleted,
+  logs,
   onToggleHabit,
   showArchived = false
 }) => {
@@ -60,12 +61,12 @@ export const DayColumn: React.FC<DayColumnProps> = ({
           <button
             onClick={() => onToggleHabit(habit.id, dayKey)}
             className={`w-5 h-5 rounded-full transition-all ${
-              isHabitCompleted(habit.id, dayKey)
+              isHabitCompleted(habit.id, dayKey, logs)
                 ? 'hover:opacity-80'
                 : 'bg-gray-700 hover:bg-gray-600'
             }`}
             style={{
-              backgroundColor: isHabitCompleted(habit.id, dayKey)
+              backgroundColor: isHabitCompleted(habit.id, dayKey, logs)
                 ? habit.color
                 : undefined
             }}
@@ -85,14 +86,14 @@ export const DayColumn: React.FC<DayColumnProps> = ({
               onClick={() => !isDisabled && onToggleHabit(habit.id, dayKey)}
               disabled={isDisabled}
               className={`w-5 h-5 rounded-full transition-all ${
-                isHabitCompleted(habit.id, dayKey)
+                isHabitCompleted(habit.id, dayKey, logs)
                   ? 'opacity-50 hover:opacity-40'
                   : isDisabled
                     ? 'bg-gray-800 cursor-not-allowed'
                     : 'bg-gray-700 hover:bg-gray-600'
               }`}
               style={{
-                backgroundColor: isHabitCompleted(habit.id, dayKey)
+                backgroundColor: isHabitCompleted(habit.id, dayKey, logs)
                   ? habit.color
                   : undefined
               }}

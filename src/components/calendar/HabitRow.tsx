@@ -2,7 +2,7 @@ import React from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import type { Habit, HabitLog } from '../../types'
-import { calculateStreakInfo } from '../../utils/streakCalculations'
+import { calculateStreakInfo } from '../../utils/streaks'
 
 interface HabitRowProps {
   habit: Habit

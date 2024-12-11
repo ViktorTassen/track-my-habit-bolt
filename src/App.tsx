@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"
-// import { Header } from "./components/Header"
 import { HabitForm } from "./components/HabitForm"
 import { MonthView } from "./components/MonthView"
 import { Modal } from "./components/Modal"
@@ -10,22 +9,22 @@ import { ClearDataSection } from "./components/ClearDataSection"
 import { useHabitData } from "./hooks/useHabitData"
 import type { Habit, CharacterSelection } from "./types"
 
-function App() {
+export function App() {
   const {
     habits,
     logs,
     progress,
     scoreEvents,
     loadData,
-    handleAddHabit,
-    handleUpdateHabit,
-    handleArchiveHabit,
-    handleUnarchiveHabit,
-    handleDeleteHabit,
-    handleToggleHabit,
+    addHabit,
+    updateHabit,
+    archiveHabit,
+    unarchiveHabit,
+    deleteHabit,
+    toggleHabit,
     handleClearScore,
     handleClearAll,
-    handleReorderHabits,
+    reorderHabits,
     setProgress,
   } = useHabitData()
 
@@ -41,9 +40,9 @@ function App() {
 
   const handleHabitSubmit = async (name: string, color: string) => {
     if (editingHabit) {
-      await handleUpdateHabit(editingHabit.id, name, color)
+      await updateHabit(editingHabit.id, name, color)
     } else {
-      await handleAddHabit(name, color)
+      await addHabit(name, color)
     }
     setShowForm(false)
     setEditingHabit(null)
@@ -57,10 +56,6 @@ function App() {
   return (
     <div className="min-h-screen bg-neutral-900 p-4 sm:p-4">
       <div className="max-w-6xl mx-auto">
-        {/* <Header
-          onOpenHelp={() => setShowHelp(true)}
-        /> */}
-
         <div className="space-y-4">
           <StatsSection
             habits={habits}
@@ -87,15 +82,15 @@ function App() {
                 setEditingHabit(null)
               }}
               onDelete={editingHabit ? () => {
-                handleDeleteHabit(editingHabit.id)
+                deleteHabit(editingHabit.id)
                 setEditingHabit(null)
               } : undefined}
               onArchive={editingHabit && !editingHabit.archived ? () => {
-                handleArchiveHabit(editingHabit.id)
+                archiveHabit(editingHabit.id)
                 setEditingHabit(null)
               } : undefined}
               onUnarchive={editingHabit?.archived ? () => {
-                handleUnarchiveHabit(editingHabit.id)
+                unarchiveHabit(editingHabit.id)
                 setEditingHabit(null)
               } : undefined}
               initialHabit={editingHabit}
@@ -114,26 +109,27 @@ function App() {
           />
 
           <MonthView
-              habits={habits}
-              logs={logs}
-              onToggleHabit={handleToggleHabit}
-              onHabitClick={setEditingHabit}
-              onReorderHabits={handleReorderHabits}
-              onAddHabit={() => setShowForm(true)}
-            />
-
+            habits={habits}
+            logs={logs}
+            onToggleHabit={toggleHabit}
+            onHabitClick={setEditingHabit}
+            onReorderHabits={reorderHabits}
+            onAddHabit={() => setShowForm(true)}
+          />
         </div>
       </div>
-
-      
-
-
 
       <div className="flex justify-end gap-4 pt-40">
         <ClearDataSection
           habits={habits.length}
-          onClearScore={handleClearScore}
-          onClearAll={handleClearAll}
+          onClearScore={() => {
+            handleClearScore()
+            setShowClearConfirm(null)
+          }}
+          onClearAll={() => {
+            handleClearAll()
+            setShowClearConfirm(null)
+          }}
           showConfirm={showClearConfirm}
           onCancelClear={() => setShowClearConfirm(null)}
         />
@@ -141,5 +137,3 @@ function App() {
     </div>
   )
 }
-
-export default App
