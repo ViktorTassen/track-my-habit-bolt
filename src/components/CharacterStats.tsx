@@ -148,7 +148,7 @@ export const CharacterStats: React.FC<CharacterStatsProps> = ({
               </div>
             </div>
 
-            <div className="h-16 overflow-hidden">
+            <div className="h-16">
               {showContent && scoreEvents.length > 0 ? (
                 <ScoreEventsList events={scoreEvents} />
               ) : (
@@ -218,7 +218,7 @@ export const CharacterStats: React.FC<CharacterStatsProps> = ({
 
           {/* Stats Cards Row - Full Width */}
           <div className="col-span-3">
-            <div className="h-16 overflow-hidden">
+            <div className="h-16">
               {showContent && scoreEvents.length > 0 ? (
                 <ScoreEventsList events={scoreEvents} />
               ) : (

@@ -1,6 +1,8 @@
 import { differenceInDays, format, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns'
 import type { Habit, HabitLog, ScoreEvent, UserProgress } from '../types'
+import type { MilestoneAchievement } from './milestoneTypes'
 import { POINTS, LEVEL_THRESHOLDS, LEVEL_TITLES } from '../config/gameConfig'
+import { calculateMilestoneComboBonus } from './milestoneCalculations'
 
 export { LEVEL_THRESHOLDS }
 
@@ -83,6 +85,8 @@ export const calculatePointsForHabit = (
     }
   }
 
+  const achievements: MilestoneAchievement[] = []
+
   // Base points
   events.push({
     type: 'completion',
@@ -100,6 +104,11 @@ export const calculatePointsForHabit = (
       details: `Full month ${habit.name}!`,
       timestamp: new Date(date).getTime()
     })
+    achievements.push({
+      type: 'monthly',
+      value: 1,
+      points: POINTS.MONTHLY_COMPLETION
+    })
   }
 
   // Streak milestone bonuses
@@ -116,6 +125,11 @@ export const calculatePointsForHabit = (
         timestamp: new Date(date).getTime()
       })
       milestones.push(milestone)
+      achievements.push({
+        type: 'streak',
+        value: milestone,
+        points
+      })
     }
   })
 
@@ -136,6 +150,20 @@ export const calculatePointsForHabit = (
         details: `${completedCount}x Daily Combo!`,
         timestamp: new Date(date).getTime()
       })
+      achievements.push({
+        type: 'multi',
+        value: completedCount,
+        points: bonus
+      })
+    }
+  }
+
+  // Calculate milestone combo bonus if multiple achievements
+  if (achievements.length >= 2) {
+    const { points: comboBonus, event: comboEvent } = calculateMilestoneComboBonus(achievements)
+    if (comboBonus > 0 && comboEvent) {
+      totalPoints += comboBonus
+      events.push(comboEvent)
     }
   }
 

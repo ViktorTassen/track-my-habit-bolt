@@ -84,7 +84,7 @@ export const MonthView: React.FC<MonthViewProps> = ({
   const isCurrentDateVisible = days.some(day => isToday(day))
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-6">
       <div className="bg-gray-800 rounded-lg shadow-sm p-4">
         <CalendarHeader
           startDate={startDate}
