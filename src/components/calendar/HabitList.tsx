@@ -8,7 +8,7 @@ import { calculateStreakInfo } from '../../utils/streakCalculations'
 interface HabitListProps {
   activeHabits: Habit[]
   archivedHabits: Habit[]
-  logs: HabitLog[]
+  logs: HabitLog[] // This now receives all logs
   onHabitClick: (habit: Habit) => void
   onReorderHabits: (habitIds: string[]) => void
   onShowArchivedChange: (show: boolean) => void
@@ -66,7 +66,7 @@ export const HabitList: React.FC<HabitListProps> = ({
             <HabitRow
               key={habit.id}
               habit={habit}
-              streakInfo={calculateStreakInfo(habit.id, logs)}
+              streakInfo={calculateStreakInfo(habit.id, logs)} // Pass all logs
               onHabitClick={onHabitClick}
               sortable={true}
             />
@@ -80,7 +80,7 @@ export const HabitList: React.FC<HabitListProps> = ({
             <HabitRow
               key={habit.id}
               habit={habit}
-              streakInfo={calculateStreakInfo(habit.id, logs)}
+              streakInfo={calculateStreakInfo(habit.id, logs)} // Pass all logs
               onHabitClick={onHabitClick}
               sortable={false}
             />

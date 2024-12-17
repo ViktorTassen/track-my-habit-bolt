@@ -6,11 +6,11 @@ import { StatsSection } from "./components/StatsSection"
 import { HelpModal } from "./components/HelpModal"
 import { CharacterSelectionModal } from "./components/CharacterSelectionModal"
 import { ClearDataSection } from "./components/ClearDataSection"
-import { useHabitData } from "./hooks/useHabitData"
+import { useHabitData } from "./hooks/habit"
 import { generateHistoricalData } from "./utils/dataGenerator"
 import type { Habit, CharacterSelection } from "./types"
 
-export default function App() {
+export function App() {
   const {
     habits,
     logs,
@@ -146,3 +146,5 @@ export default function App() {
   )
 }
 
+// Add default export
+export default App

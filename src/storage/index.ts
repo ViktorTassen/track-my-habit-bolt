@@ -2,3 +2,4 @@
 export * from './habitStorage'
 export * from './logsStorage'
 export * from './progressStorage'
+export * from './storage'
