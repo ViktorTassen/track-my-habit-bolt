@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react'
-import { addDays, subDays, startOfDay, isToday } from 'date-fns'
+import { addDays, subDays, startOfDay, isToday, format } from 'date-fns'
 import type { Habit, HabitLog } from '../types'
 import { useCalendarPosition } from '../hooks/useCalendarPosition'
 import { CalendarHeader } from './calendar/CalendarHeader'
 import { HabitList } from './calendar/HabitList'
 import { DayColumn } from './calendar/DayColumn'
+import { getLogsForDateRange } from '../storage'
 
 interface MonthViewProps {
   habits: Habit[]
@@ -26,6 +27,7 @@ export const MonthView: React.FC<MonthViewProps> = ({
   const { startDate, setStartDate } = useCalendarPosition()
   const [daysToShow, setDaysToShow] = useState(31)
   const [showArchived, setShowArchived] = useState(false)
+  const [visibleLogs, setVisibleLogs] = useState<HabitLog[]>(logs)
   const containerRef = useRef<HTMLDivElement>(null)
 
   // Split and sort habits by order
@@ -41,6 +43,7 @@ export const MonthView: React.FC<MonthViewProps> = ({
     }, { activeHabits: [] as Habit[], archivedHabits: [] as Habit[] })
   }, [habits])
 
+  // Calculate optimal days to show based on container width
   useEffect(() => {
     const calculateDaysToShow = () => {
       if (!containerRef.current) return
@@ -60,11 +63,22 @@ export const MonthView: React.FC<MonthViewProps> = ({
     return () => resizeObserver.disconnect()
   }, [])
 
+  // Load logs for visible date range
+  useEffect(() => {
+    const loadVisibleLogs = async () => {
+      const visibleStart = format(startDate, 'yyyy-MM-dd')
+      const visibleEnd = format(addDays(startDate, daysToShow - 1), 'yyyy-MM-dd')
+      const rangeLogs = await getLogsForDateRange(visibleStart, visibleEnd)
+      setVisibleLogs(rangeLogs)
+    }
+    loadVisibleLogs()
+  }, [startDate, daysToShow, logs])
+
   const days = Array.from({ length: daysToShow }, (_, i) => addDays(startDate, i))
   const endDate = days[days.length - 1]
 
   const isHabitCompleted = (habitId: string, date: string) => {
-    return logs.some(
+    return visibleLogs.some(
       (log) => log.habitId === habitId && log.date === date && log.completed
     )
   }
@@ -107,7 +121,7 @@ export const MonthView: React.FC<MonthViewProps> = ({
             <HabitList
               activeHabits={activeHabits}
               archivedHabits={archivedHabits}
-              logs={logs}
+              logs={visibleLogs}
               onHabitClick={onHabitClick}
               onReorderHabits={onReorderHabits}
               onShowArchivedChange={setShowArchived}

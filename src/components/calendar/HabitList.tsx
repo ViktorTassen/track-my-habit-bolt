@@ -3,6 +3,7 @@ import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, us
 import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import type { Habit, HabitLog } from '../../types'
 import { HabitRow } from './HabitRow'
+import { calculateStreakInfo } from '../../utils/streakCalculations'
 
 interface HabitListProps {
   activeHabits: Habit[]
@@ -65,7 +66,7 @@ export const HabitList: React.FC<HabitListProps> = ({
             <HabitRow
               key={habit.id}
               habit={habit}
-              logs={logs}
+              streakInfo={calculateStreakInfo(habit.id, logs)}
               onHabitClick={onHabitClick}
               sortable={true}
             />
@@ -79,7 +80,7 @@ export const HabitList: React.FC<HabitListProps> = ({
             <HabitRow
               key={habit.id}
               habit={habit}
-              logs={logs}
+              streakInfo={calculateStreakInfo(habit.id, logs)}
               onHabitClick={onHabitClick}
               sortable={false}
             />

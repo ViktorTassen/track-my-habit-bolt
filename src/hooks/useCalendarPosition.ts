@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { startOfDay, differenceInDays, addDays } from 'date-fns'
+import { startOfDay, differenceInDays, addDays, format } from 'date-fns'
+import { getLogsForDateRange } from '../storage'
 
 export function useCalendarPosition() {
   const [startDate, setStartDate] = useState(() => {
@@ -30,6 +31,16 @@ export function useCalendarPosition() {
       setStartDate(newDate)
     }
   }
+
+  // Load logs for visible date range
+  useEffect(() => {
+    const loadVisibleLogs = async () => {
+      const visibleStart = format(startDate, 'yyyy-MM-dd')
+      const visibleEnd = format(addDays(startDate, 31), 'yyyy-MM-dd')
+      await getLogsForDateRange(visibleStart, visibleEnd)
+    }
+    loadVisibleLogs()
+  }, [startDate])
 
   return { startDate, setStartDate: setDateWithinBounds }
 }

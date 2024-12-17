@@ -1,4 +1,5 @@
 import type { CharacterType } from './characterConfig'
+import { getAssetPath, getCharacterPath } from '../utils/assetPaths'
 
 export const CHARACTER_FRAME_CONFIG: Record<CharacterType, { Hit: number; Idle: number }> = {
   CuteCat: {
@@ -64,7 +65,12 @@ export const generateFramePaths = (character: CharacterType, variant: string, an
 
   for (let i = 0; i < frameCount; i++) {
     frames.push({
-      src: `/assets/characters/${character}/${variant}/${animation}/${String(i).padStart(2, '0')}.png`,
+      src: getCharacterPath(
+        character,
+        variant,
+        animation,
+        String(i).padStart(2, '0') + '.png'
+      ),
       duration: ANIMATION_CONFIG.frameDuration
     })
   }
@@ -72,5 +78,5 @@ export const generateFramePaths = (character: CharacterType, variant: string, an
 }
 
 export const getCharacterPreviewPath = (character: string, variant: string): string => {
-  return `/assets/characters/${character}/${variant}/Idle/00.png`
+  return getCharacterPath(character, variant, 'Idle', '00.png')
 }

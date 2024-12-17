@@ -1,19 +1,18 @@
 import React from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import type { Habit, HabitLog } from '../../types'
-import { calculateStreakInfo } from '../../utils/streakCalculations'
+import type { Habit } from '../../types'
 
 interface HabitRowProps {
   habit: Habit
-  logs: HabitLog[]
+  streakInfo: { currentStreak: number; maxStreak: number }
   onHabitClick: (habit: Habit) => void
   sortable?: boolean
 }
 
 export const HabitRow: React.FC<HabitRowProps> = ({
   habit,
-  logs,
+  streakInfo,
   onHabitClick,
   sortable = false
 }) => {
@@ -28,7 +27,7 @@ export const HabitRow: React.FC<HabitRowProps> = ({
   } : undefined
 
   const isArchived = habit.archived
-  const { currentStreak, maxStreak } = calculateStreakInfo(habit.id, logs)
+  const { currentStreak, maxStreak } = streakInfo
 
   return (
     <div

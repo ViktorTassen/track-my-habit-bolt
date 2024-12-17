@@ -1,6 +1,7 @@
 import React from 'react'
 import { Modal } from './Modal'
-import { POINTS } from '../config/gameConfig'
+import { getAllMilestones, MONTHLY_COMPLETION_BONUS } from '../utils/scoring/milestoneCalculations'
+import { getBasePointsByStreak } from '../utils/scoring/basePoints'
 
 interface HelpModalProps {
   isOpen: boolean
@@ -8,6 +9,9 @@ interface HelpModalProps {
 }
 
 export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
+  const streakMilestones = getAllMilestones()
+  const maxBasePoints = getBasePointsByStreak(365)
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="max-w-3xl">
       <div className="space-y-6">
@@ -31,10 +35,23 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
               </div>
               <div>
                 <h3 className="font-quicksand text-lg font-semibold text-white">Daily Points</h3>
-                <div className="font-quicksand text-2xl font-bold text-indigo-400">+{POINTS.BASE}</div>
+                <div className="font-quicksand text-2xl font-bold text-indigo-400">Up to {maxBasePoints}</div>
               </div>
             </div>
-            <p className="text-sm text-gray-400">Complete any habit to earn base points</p>
+            <div className="space-y-1">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-400">Days 1-4</span>
+                <span className="font-quicksand text-indigo-400">10-25</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-400">Days 5-29</span>
+                <span className="font-quicksand text-indigo-400">35</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-400">Days 30+</span>
+                <span className="font-quicksand text-indigo-400">50-150</span>
+              </div>
+            </div>
           </div>
 
           {/* Streak Bonuses */}
@@ -46,12 +63,12 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
               <div>
                 <h3 className="font-quicksand text-lg font-semibold text-white">Streak Bonuses</h3>
                 <div className="font-quicksand text-2xl font-bold text-orange-400">
-                  Up to +{Math.max(...Object.values(POINTS.STREAK_MILESTONES))}
+                  Up to {streakMilestones[1000]}
                 </div>
               </div>
             </div>
             <div className="space-y-1">
-              {Object.entries(POINTS.STREAK_MILESTONES).slice(0, 3).map(([days, points]) => (
+              {Object.entries(streakMilestones).slice(0, 3).map(([days, points]) => (
                 <div key={days} className="flex justify-between text-sm">
                   <span className="text-gray-400">{days} days</span>
                   <span className="font-quicksand text-orange-400">+{points}</span>
@@ -69,18 +86,13 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
               <div>
                 <h3 className="font-quicksand text-lg font-semibold text-white">Daily Combos</h3>
                 <div className="text-2xl font-bold text-purple-400">
-                  Up to +{Math.max(...Object.values(POINTS.MULTI_HABIT_COMPLETION))}
+                  Bonus Formula
                 </div>
               </div>
             </div>
-            <div className="space-y-1">
-              {Object.entries(POINTS.MULTI_HABIT_COMPLETION).slice(0, 3).map(([count, points]) => (
-                <div key={count} className="flex justify-between text-sm">
-                  <span className="text-gray-400">{count} habits</span>
-                  <span className="font-quicksand text-purple-400">+{points}</span>
-                </div>
-              ))}
-            </div>
+            <p className="text-sm text-gray-400">
+              (Base Points Average) × (1 + Average Streak × 0.01)
+            </p>
           </div>
 
           {/* Monthly Achievement */}
@@ -91,7 +103,7 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
               </div>
               <div>
                 <h3 className="font-quicksand text-lg font-semibold text-white">Monthly Master</h3>
-                <div className="font-quicksand text-2xl font-bold text-green-400">+{POINTS.MONTHLY_COMPLETION}</div>
+                <div className="font-quicksand text-2xl font-bold text-green-400">+{MONTHLY_COMPLETION_BONUS}</div>
               </div>
             </div>
             <p className="text-sm text-gray-400">Complete a habit every day of the month</p>
