@@ -1,11 +1,34 @@
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isToday, isSameWeek } from 'date-fns'
+export const formatDate = (date: Date): string => {
+  return date.toISOString().split('T')[0];
+};
 
-export const formatDate = (date: Date, formatStr: string) => format(date, formatStr)
-export const getMonthDays = (date: Date) => {
-  const monthStart = startOfMonth(date)
-  const monthEnd = endOfMonth(date)
-  return eachDayOfInterval({ start: monthStart, end: monthEnd })
-}
-export const checkIsToday = (date: Date) => isToday(date)
-export const checkIsSameWeek = (date1: Date, date2: Date) => 
-  isSameWeek(date1, date2, { weekStartsOn: 1 })
+export const getMonthKey = (date: Date): string => {
+  return `track-my-habit-${date.getMonth() + 1}-${date.getFullYear()}`;
+};
+
+export const getDayRange = (startDate: Date, days: number): Date[] => {
+  const dates: Date[] = [];
+  for (let i = 0; i < days; i++) {
+    const date = new Date(startDate);
+    date.setDate(startDate.getDate() + i);
+    dates.push(date);
+  }
+  return dates;
+};
+
+export const formatDateRange = (startDate: Date, endDate: Date): string => {
+  const options: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' };
+  return `${startDate.toLocaleDateString('en-US', options)} - ${endDate.toLocaleDateString('en-US', options)}, ${endDate.getFullYear()}`;
+};
+
+export const getUniqueMonthKeys = (startDate: Date, endDate: Date): string[] => {
+  const keys = new Set<string>();
+  const currentDate = new Date(startDate);
+  
+  while (currentDate <= endDate) {
+    keys.add(getMonthKey(currentDate));
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+  
+  return Array.from(keys);
+};

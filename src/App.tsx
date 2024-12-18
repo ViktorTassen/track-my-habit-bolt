@@ -1,150 +1,76 @@
-import { useState, useEffect } from "react"
-import { HabitForm } from "./components/HabitForm"
-import { MonthView } from "./components/MonthView"
-import { Modal } from "./components/Modal"
-import { StatsSection } from "./components/StatsSection"
-import { HelpModal } from "./components/HelpModal"
-import { CharacterSelectionModal } from "./components/CharacterSelectionModal"
-import { ClearDataSection } from "./components/ClearDataSection"
-import { useHabitData } from "./hooks/habit"
-import { generateHistoricalData } from "./utils/dataGenerator"
-import type { Habit, CharacterSelection } from "./types"
+import React from 'react';
+import { Calendar } from './components/Calendar';
+import { DemoDataButton } from './components/DemoDataButton';
+import { useHabitTracking } from './hooks/useHabitTracking';
+import { useCalendarRange } from './hooks/useCalendarRange';
+import { useHabits } from './hooks/useHabits';
 
 export function App() {
-  const {
-    habits,
-    logs,
-    progress,
-    scoreEvents,
-    loadData,
-    handleAddHabit,
-    handleUpdateHabit,
-    handleArchiveHabit,
-    handleUnarchiveHabit,
-    handleDeleteHabit,
-    handleToggleHabit,
-    handleClearScore,
-    handleClearAll,
-    handleReorderHabits,
-    handleGenerateTestData,
-    setProgress,
-  } = useHabitData()
+  const { range, updateRange } = useCalendarRange();
+  const { 
+    habits, 
+    showArchived,
+    addHabit, 
+    editHabit, 
+    removeHabit,
+    toggleArchiveHabit,
+    toggleShowArchived,
+    reorderHabits
+  } = useHabits();
+  const { toggleHabit, clearAllProgress, isHabitCompleted, loadMonthlyData, monthlyData } = useHabitTracking(
+    range.startDate,
+    range.endDate
+  );
 
-  const [showForm, setShowForm] = useState(false)
-  const [showHelp, setShowHelp] = useState(false)
-  const [showCharacterSelect, setShowCharacterSelect] = useState(false)
-  const [editingHabit, setEditingHabit] = useState<Habit | null>(null)
-  const [showClearConfirm, setShowClearConfirm] = useState<'score' | 'all' | null>(null)
-
-  useEffect(() => {
-    loadData()
-  }, [loadData])
-
-  const handleHabitSubmit = async (name: string, color: string) => {
-    if (editingHabit) {
-      await handleUpdateHabit(editingHabit.id, name, color)
-    } else {
-      await handleAddHabit(name, color)
+  const handleClearAll = () => {
+    if (window.confirm('Are you sure you want to clear all progress? This cannot be undone.')) {
+      clearAllProgress();
     }
-    setShowForm(false)
-    setEditingHabit(null)
-  }
+  };
 
-  const handleCharacterSelect = (selection: CharacterSelection) => {
-    setProgress(prev => ({ ...prev, selectedCharacter: selection }))
-    setShowCharacterSelect(false)
-  }
-
-  const handleGenerateData = async () => {
-    const activeHabits = habits.filter(h => !h.archived)
-    if (activeHabits.length === 0) {
-      alert('Please add at least one habit first')
-      return
-    }
-    
-    const historicalLogs = generateHistoricalData(activeHabits.map(h => h.id))
-    await handleGenerateTestData(historicalLogs)
-  }
+  const handleDemoDataGenerated = () => {
+    loadMonthlyData(range.startDate, range.endDate);
+  };
 
   return (
-    <div className="min-h-screen bg-neutral-900 p-4 sm:p-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="space-y-4">
-          <StatsSection
-            habits={habits}
-            logs={logs}
-            points={progress.points}
-            level={progress.level}
-            scoreEvents={scoreEvents}
-            selectedCharacter={progress.selectedCharacter ?? { character: 'CuteCat', variant: 'Character01' }}
-            onCharacterClick={() => setShowCharacterSelect(true)}
-            onOpenHelp={() => setShowHelp(true)}
-          />
+    <div className="min-h-screen bg-gray-800 text-white p-8">
+      <div className="max-w-4xl mx-auto">
+        
 
-          <Modal
-            isOpen={showForm || editingHabit !== null}
-            onClose={() => {
-              setShowForm(false)
-              setEditingHabit(null)
-            }}
-          >
-            <HabitForm
-              onSubmit={handleHabitSubmit}
-              onCancel={() => {
-                setShowForm(false)
-                setEditingHabit(null)
-              }}
-              onDelete={editingHabit ? () => {
-                handleDeleteHabit(editingHabit.id)
-                setEditingHabit(null)
-              } : undefined}
-              onArchive={editingHabit && !editingHabit.archived ? () => {
-                handleArchiveHabit(editingHabit.id)
-                setEditingHabit(null)
-              } : undefined}
-              onUnarchive={editingHabit?.archived ? () => {
-                handleUnarchiveHabit(editingHabit.id)
-                setEditingHabit(null)
-              } : undefined}
-              initialHabit={editingHabit}
+        <Calendar
+          range={range}
+          habits={habits}
+          monthlyData={monthlyData}
+          showArchived={showArchived}
+          onRangeChange={updateRange}
+          onAddHabit={addHabit}
+          onEditHabit={editHabit}
+          isHabitCompleted={isHabitCompleted}
+          onToggleHabit={toggleHabit}
+          onRemoveHabit={removeHabit}
+          onToggleArchiveHabit={toggleArchiveHabit}
+          onToggleShowArchived={toggleShowArchived}
+          onReorderHabits={reorderHabits}
+        />
+
+        <div className="flex items-center mt-96">
+        
+          <div className="flex gap-4">
+            <DemoDataButton 
+              habits={habits}
+              onDataGenerated={handleDemoDataGenerated}
             />
-          </Modal>
-
-          <HelpModal isOpen={showHelp} onClose={() => setShowHelp(false)} />
-
-          <CharacterSelectionModal
-            isOpen={showCharacterSelect}
-            onClose={() => setShowCharacterSelect(false)}
-            selectedCharacter={progress.selectedCharacter}
-            onSelectCharacter={handleCharacterSelect}
-            level={progress.level}
-            points={progress.points}
-          />
-
-          <MonthView
-            habits={habits}
-            logs={logs}
-            onToggleHabit={handleToggleHabit}
-            onHabitClick={setEditingHabit}
-            onReorderHabits={handleReorderHabits}
-            onAddHabit={() => setShowForm(true)}
-          />
+            <button
+              onClick={handleClearAll}
+              className="px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg transition-colors"
+            >
+              Clear All Progress
+            </button>
+          </div>
         </div>
       </div>
-
-      <div className="flex justify-end gap-4 pt-40">
-        <ClearDataSection
-          habits={habits.length}
-          onClearScore={handleClearScore}
-          onClearAll={handleClearAll}
-          onGenerateData={handleGenerateData}
-          showConfirm={showClearConfirm}
-          onCancelClear={() => setShowClearConfirm(null)}
-        />
-      </div>
     </div>
-  )
+  );
 }
 
-// Add default export
-export default App
+export default App;

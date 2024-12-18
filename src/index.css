@@ -5,20 +5,8 @@
 .writing-mode-vertical {
   writing-mode: vertical-rl;
   text-orientation: mixed;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-
-#st-1 {
-  z-index: 1!important;
+  transform: rotate(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
