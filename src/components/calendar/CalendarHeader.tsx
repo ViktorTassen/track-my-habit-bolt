@@ -3,6 +3,8 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { formatDateRange } from '../../utils/dateUtils';
 import { AddHabitDialog } from '../AddHabitDialog';
 import { CharacterQuote } from '../CharacterQuote';
+import { AnimatedCharacter } from '../AnimatedCharacter';
+import { CHARACTERS } from '../../constants/characters';
 import type { CalendarRange } from '../../types/calendar';
 
 interface CalendarHeaderProps {
@@ -32,11 +34,14 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 }) => (
   <div className="flex justify-between items-center mb-6">
     <div className="flex-1 flex items-center gap-4">
-      <img 
-        src="/assets/00.png" 
-        alt="Character"
-        className="w-20 h-12 object-cover scale-[3] translate-y-1"
-      />
+      <div className="w-20 h-12 relative">
+        <AnimatedCharacter
+          character={CHARACTERS[0]} // CuteCat
+          variantId="Character01"
+          animation="Idle"
+          className="w-20 h-12 object-cover scale-[3] translate-y-1"
+        />
+      </div>
       {showQuote ? (
         <CharacterQuote 
           show={showQuote} 
